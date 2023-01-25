@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<events>
+    <event>
+        <name>event1</name>
+        <description>description1</description>
+        <fields>
+            <field>
+                <name>field1</name>
+                <type>string</type>
+            </field>
+            <field>
+                <name>field2</name>
+                <type>int</type>
+            </field>
+        </fields>
+    </event>
+    <event>
+        <name>event2</name>
+        <description>description2</description>
+        <fields>
+            <field>
+                <name>field1</name>
+                <type>string</type>
+            </field>
+            <field>
+                <name>field2</name>
+                <type>int</type>
+            </field>
+        </fields>
+    </event>
+</events>
