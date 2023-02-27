@@ -1,4 +1,4 @@
-@main def hello: Unit = 
+@main implicit def hello: Unit = 
   println("Hello world!")
   println(msg)
 
