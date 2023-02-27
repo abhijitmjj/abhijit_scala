@@ -572,9 +572,8 @@ object GenerateMultipleJson {
     val transactionKeys = (1 to numObjects).map(i => transactionKeyRegex.random())
     
     val transactionLocalDateTimes = (1 to numObjects).map(i => generateDateTime)
-    
-    val accountKeyRegex = new Generex(s"466\\.${List("DP", "GL")(random.nextInt(2))}\\.[0-9]{7}")
-    val accountKeys = (1 to numObjects).map(i => accountKeyRegex.random())
+  
+    val accountKeys = (1 to numObjects).map(i => new Generex(s"466\\.${List("DP", "GL")((new Random()).nextInt(2))}\\.[0-9]{7}").random())
     
     val jsonObjects = (1 to numObjects).map { i =>
       JObject(
