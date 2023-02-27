@@ -57,5 +57,10 @@ Generates sample FIS data files:
 //     }
 // }
 
+(xml_currencyCodesISO \\ "CcyNtry").foldLeft(Map.empty[String, Set[String]]) {(result, s) => 
+    val keyValue = ((s\"CcyNbr").text.toLowerCase(), (s\"Ccy").text)
+    val key = keyValue(1).trim
+    val value = keyValue(0).trim
+    result.updated(key, result.getOrElse(key, Set.empty[String] + value))}
 For more information on the sbt-dotty plugin, see the
 [scala3-example-project](https://github.com/scala/scala3-example-project/blob/main/README.md).

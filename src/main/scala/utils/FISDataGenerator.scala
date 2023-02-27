@@ -9,6 +9,7 @@ import java.net.URLEncoder
 import com.mifmif.common.regex.Generex
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonInclude.Include
+import utils.XMLFileReader._
 
 case class BaseTransactionAType(
     actionInitiatorCd: String = "",
@@ -104,7 +105,7 @@ case class MonetaryTransactionAType(
   }
 }
 
-@JsonInclude(Include.NON_EMPTY)
+
 case class MonetaryTransactionBType(
     addendaRecordCount: Int,
     fundsDirectionCd: Int,
@@ -546,7 +547,16 @@ object GenerateMultipleJson {
   }
 
   def main(args: Array[String]): Unit = {
+    
     val numObjects = 5 // number of JSON objects to generate
+    // take numObjects number of entries from 
+    val country_currency = readCountryCurrencyCodes().filter(_(1) != "NA")
+    // take random numObjects number of entries from country_currency shuffle
+    val country_currency_random = scala.util.Random.shuffle(country_currency).take(numObjects)
+    val countries = country_currency_random.map(_(0)).toList
+    val currencies = country_currency_random.map(_(1)).toList
+    
+    // take second element of country_currency_random
     val fileName = "sample_data.log" // output file name
     val random = new Random()
     val transactionLocalDateTime = LocalDateTime.of(2022, 5, 27, 12, 0, 0)
@@ -569,7 +579,7 @@ object GenerateMultipleJson {
 
         "amount" -> AmountType(
           normalizedOriginalAmount = amounts(i - 1),
-          originalCurrencyCd = List("USD", "EUR", "GBP", "JPY", "CNY")(random.nextInt(5)),
+          originalCurrencyCd = currencies(i - 1),
           originalAmount = (f"${random.nextDouble()}%.02f").toDouble * 1000000,
           regionNormalizedOriginalAmount = (f"${random.nextDouble()}%.02f").toDouble * 1000000,
           accountAmount = (f"${random.nextDouble()}%.02f").toDouble * 1000000,
@@ -581,7 +591,7 @@ object GenerateMultipleJson {
           resendDueToFailureInd = List(true, false)(random.nextInt(2)),
           sourceCd = s"WireSystem_${random.nextInt(10) + 1}",
           transactionLocalDateTime = transactionLocalDateTimes(i-1),
-          partyKey = s"partyKey_${random.nextInt(1000)}",
+          partyKey = s"466.${random.nextInt(1000)}",
           transactionNormalizedDateTime = transactionLocalDateTimes(i-1)
         ).toJObj(),
         
@@ -591,11 +601,11 @@ object GenerateMultipleJson {
 
         "baseTransactionC" -> BaseTransactionCType(
           transactionKey = transactionKeys(i-1),
-          transactionType = List("International", "Domestic")(random.nextInt(2))
+          transactionType = if countries(i-1) == "US" then "Domestic" else "International",
         ).toJObj(),
 
         "monetaryTransactionB" -> MonetaryTransactionBType(
-          fundsDirectionCd = List(0, 1)(random.nextInt(2)),
+          fundsDirectionCd = 1, //List(0, 1)(random.nextInt(2)),
           payeeDataAccountNumber = payeeAccounts(i-1),
           transactionId = transactionKeys(i-1),
           addendaRecordCount = random.nextInt(100),
@@ -632,7 +642,7 @@ object GenerateMultipleJson {
         "trxMonitoredAccountData" -> TrxAccountDataType(
           accountNumber = accountKeys(i-1).split("\\.")(2),
           overdraftBalance = GenRegexObject.amountRegex.random().toDouble,
-          currencyCd = List("USD", "EUR", "GBP", "JPY", "CNY")(random.nextInt(5)),
+          currencyCd = currencies(i - 1),
           currentBalance = Option(GenRegexObject.amountRegex.random().toDouble),
         ).toJObj(),
 
@@ -640,12 +650,12 @@ object GenerateMultipleJson {
           "accountNumber" -> JString(payeeAccounts(i-1)),
           "fiName" -> JString(GenRegexObject.nameRegex.random()),
           "routingNumber" -> JLong(generateRoutingNumber.toLong),
-          "routingType" -> JString("ABA")
+          "routingType" -> JString(if currencies(i - 1) == "USD" then "ABA" else "BIC")
         ),
         "trxPayeePartyData" -> JObject(
           "addressData" -> JObject(
             "addressLine1" -> JString(GenRegexObject.addressRegex.random()),
-            "countryCd" -> JString("US"),
+            "countryCd" -> JString(countries(i - 1)),
             "state" -> JString(GenRegexObject.stateRegex.random()),
           ),
           "lastName" -> JString(GenRegexObject.lastNameRegex.random()),
