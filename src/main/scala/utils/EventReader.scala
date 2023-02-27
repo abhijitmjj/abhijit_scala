@@ -50,7 +50,7 @@ object EventReader {
     new EventReader().parse(oldText)
   }
 }
-@main implicit def hello: Unit =
+@main implicit def hello_test: Unit =
     val testCases = Map(
         "httpacceptencoding=gzip, br,client_tz=-18000000" -> Map("httpacceptencoding" -> Set("gzip"), "br" -> Set(""), "client_tz" -> Set("-18000000")),
         "httpacceptencoding=gzip, br,client_tz=-18000000,br={hello,world}" -> Map("httpacceptencoding" -> Set("gzip"), "br" -> Set("", "{hello,world}"), "client_tz" -> Set("-18000000")),

@@ -1,3 +1,4 @@
+package utils
 import org.json4s._
 import org.json4s.jackson.JsonMethods._
 import java.io.PrintWriter
@@ -547,18 +548,20 @@ object GenerateMultipleJson {
   }
 
   def main(args: Array[String]): Unit = {
-    
-    val numObjects = 5 // number of JSON objects to generate
+    //get the number of JSON objects to generate from the command line
+    val numObjects = args(0).toInt  // number of JSON objects to generate
     // take numObjects number of entries from 
-    val country_currency = readCountryCurrencyCodes().filter(_(1) != "NA")
-    // take random numObjects number of entries from country_currency shuffle
-    val country_currency_random = scala.util.Random.shuffle(country_currency).take(numObjects)
-    val countries = country_currency_random.map(_(0)).toList
-    val currencies = country_currency_random.map(_(1)).toList
+    val country_currency = readCountryCurrencyCodes().filter(x => x(1) != "NA" && x(1).trim != "").toMap
+
     
     // take second element of country_currency_random
     val fileName = "sample_data.log" // output file name
     val random = new Random()
+    // take random numObjects number of entries from country_currency shuffle
+    //val country_currency_random = scala.util.Random.shuffle(country_currency).take(numObjects)
+    val country_currency_random = (1 to numObjects).map(i => country_currency.toSeq(random.nextInt(country_currency.toSeq.size)))
+    val countries = country_currency_random.map(_(0)).toList
+    val currencies = country_currency_random.map(_(1)).toList
     val transactionLocalDateTime = LocalDateTime.of(2022, 5, 27, 12, 0, 0)
 
     val payeeAccounts = (1 to numObjects).map(i => GenRegexObject.accountNumberRegex.random())
@@ -575,7 +578,7 @@ object GenerateMultipleJson {
     
     val jsonObjects = (1 to numObjects).map { i =>
       JObject(
-        "id" -> JInt(i),
+        //"id" -> JInt(i),
 
         "amount" -> AmountType(
           normalizedOriginalAmount = amounts(i - 1),
@@ -650,7 +653,7 @@ object GenerateMultipleJson {
           "accountNumber" -> JString(payeeAccounts(i-1)),
           "fiName" -> JString(GenRegexObject.nameRegex.random()),
           "routingNumber" -> JLong(generateRoutingNumber.toLong),
-          "routingType" -> JString(if currencies(i - 1) == "USD" then "ABA" else "BIC")
+          "routingType" -> JString(if countries(i - 1) == "US" then "ABA" else "BIC")
         ),
         "trxPayeePartyData" -> JObject(
           "addressData" -> JObject(
@@ -681,11 +684,17 @@ object GenerateMultipleJson {
       case _ => false
     })
     
+
+    
+    // sort the JSON objects by transactionNormalizedDateTime by parsing the date string 
+    // and converting it to a LocalDateTime object
+    val sortedJsonObjects = jsonObjects2.sortBy(x => LocalDateTime.parse(x \ "baseTransactionA" \ "transactionNormalizedDateTime" match {
+      case JString(s) => s
+      case _ => throw new Exception("Could not parse transactionNormalizedDateTime")
+    }, DateTimeFormatter.ISO_DATE_TIME))
     // replace compact with pretty to get pretty printed JSON
     // minify the JSON objects and print them in a log file 
-    
-
-    val jsonString = jsonObjects2.map(x => pretty(render(x))).mkString("\n")
+    val jsonString = sortedJsonObjects.map(x => compact(render(x))).mkString("\n")
     
     val writer = new PrintWriter(fileName)
     writer.write(jsonString)
