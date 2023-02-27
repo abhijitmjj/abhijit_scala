@@ -495,8 +495,6 @@ class JsonBuilder {
 }
 
 
-
-@JsonInclude(Include.NON_EMPTY)
 object GenerateMultipleJson {
   def generateRoutingNumber: String = {
     val random = new Random()
@@ -514,6 +512,27 @@ object GenerateMultipleJson {
     s"$xxxx$yyyy$diff"
   }
 
+  // generate a random valid date in the format YYYYMMDD
+  def generateDate: String = {
+    val random = new Random()
+    val year = random.between(2020, 2024)
+    val month = random.between(1, 13)
+    val day = random.between(1, 29)
+    f"$year%04d$month%02d$day%02d"
+  }
+
+  def generateDateTime: String = {
+    val random = new Random()
+    val year = random.between(2020, 2024)
+    val month = random.between(1, 13)
+    val day = random.between(1, 29)
+    val hour = random.between(0, 24)
+    val minute = random.between(0, 60)
+    val second = random.between(0, 60)
+    val millisecond = random.between(0, 1000)
+    f"$year%04d-$month%02d-$day%02dT$hour%02d:$minute%02d:$second%02d.$millisecond%03dZ"
+  }
+
   def main(args: Array[String]): Unit = {
     val numObjects = 5 // number of JSON objects to generate
     val fileName = "sample_data.log" // output file name
@@ -527,11 +546,20 @@ object GenerateMultipleJson {
     val zipRegex = new Generex("[0-9]{5}")
     val phoneRegex = new Generex("[0-9]{3}-[0-9]{3}-[0-9]{4}")
     val originatorToBeneficiaryInfoRegex = new Generex("[A-Z][a-z]{3,8}\\s[A-Z][a-z]{3,10}\\s[A-Z][a-z]{3,10}\\s[A-Z][a-z]{3,10}")
+    // generate a random Long value between 10^13 and 10^14
+    val accountNumberRegex = new Generex("[0-9]{13,14}")
     val amountRegex = new Generex("[0-9]{1,10}\\.[0-9]{2}")
     // generate numObjects number of amount objects
     val amounts = (1 to numObjects).map(i => amountRegex.random().toDouble)
-    println(amounts)
-
+    // generate transactionKey regex; it looks like '2022063112345432'
+    val transactionKeyRegex = new Generex(s"${generateDate}[0-9]{5}")
+    // generate transactionKey for each JSON object
+    val transactionKeys = (1 to numObjects).map(i => transactionKeyRegex.random())
+    // generate transactionLocalDateTime for each JSON object
+    //val transactionLocalDateTimes = (1 to numObjects).map(i => transactionLocalDateTime.plusSeconds(i * 10).toString())
+    val transactionLocalDateTimes = (1 to numObjects).map(i => generateDateTime)
+    val accountKeyRegex = new Generex(s"466\\.${List("DP", "GL")(random.nextInt(2))}\\.[0-9]{7}")
+    val accountKeys = (1 to numObjects).map(i => accountKeyRegex.random())
     val jsonObjects = (1 to numObjects).map { i =>
       JObject(
         "id" -> JInt(i),
@@ -549,24 +577,25 @@ object GenerateMultipleJson {
           channel = List("ONLINE", "OFFLINE", "MOBILE", "ATM")(random.nextInt(4)),
           resendDueToFailureInd = List(true, false)(random.nextInt(2)),
           sourceCd = s"WireSystem_${random.nextInt(10) + 1}",
-          transactionLocalDateTime = transactionLocalDateTime.minusMinutes(random.nextInt(60 * 24 * 30)).minusSeconds(random.nextInt(60)).format(DateTimeFormatter.ISO_DATE_TIME),
+          transactionLocalDateTime = transactionLocalDateTimes(i-1),
           partyKey = s"partyKey_${random.nextInt(1000)}",
-          transactionNormalizedDateTime = LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME)
+          //transactionNormalizedDateTime = LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME)
+          transactionNormalizedDateTime = transactionLocalDateTimes(i-1)
         ).toJObj(),
         
         "baseTransactionB" -> BaseTransactionBType(
-          accountKey = s"${random.nextInt(1000)}.${random.nextInt(1000)}.${random.nextInt(1000000)}"
+          accountKey = accountKeys(i-1),
         ).toJObj(),
 
         "baseTransactionC" -> BaseTransactionCType(
-          transactionKey = random.nextLong().toString(),
+          transactionKey = transactionKeys(i-1),
           transactionType = List("International", "Domestic")(random.nextInt(2))
         ).toJObj(),
 
         "monetaryTransactionB" -> MonetaryTransactionBType(
           fundsDirectionCd = List(0, 1)(random.nextInt(2)),
-          payeeDataAccountNumber = random.nextLong().toString(),
-          transactionId = random.nextLong().toString(),
+          payeeDataAccountNumber = accountNumberRegex.random().toString(),
+          transactionId = transactionKeys(i-1),
           addendaRecordCount = random.nextInt(100),
           payeePartyKey = ""
         ).toJObj(),
@@ -590,7 +619,9 @@ object GenerateMultipleJson {
         ).toJObj(),
 
         "trxMonitoredAccountData" -> TrxAccountDataType(
-          accountNumber = random.between(1000000, 9999999).toString(),
+          // take only the last digits after point
+          accountNumber = accountKeys(i-1).split("\\.")(2),
+          //accountNumber = accountKeys(i-1),
           overdraftBalance = random.nextDouble() * 1000000,
           currencyCd = List("USD", "EUR", "GBP", "JPY", "CNY")(random.nextInt(5)),
           currentBalance = Option(random.nextDouble() * 1000000),
@@ -638,7 +669,7 @@ object GenerateMultipleJson {
     // minify the JSON objects and print them in a log file 
     
 
-    val jsonString = jsonObjects2.map(x => compact(render(x))).mkString("\n")
+    val jsonString = jsonObjects2.map(x => pretty(render(x))).mkString("\n")
     
     val writer = new PrintWriter(fileName)
     writer.write(jsonString)

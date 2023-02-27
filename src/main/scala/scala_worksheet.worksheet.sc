@@ -48,5 +48,32 @@ val rem = checksum % 10
 val diff = 10 - checksum % 10
 val routing_number = number.toInt*10 + diff
 s"$xxxx$yyyy$diff"
+import com.mifmif.common.regex.Generex
+//date regex
+val dateRegex = new Generex("202[0-3][0-12]")
+dateRegex.random()
+val transactionKeyRegex = new Generex("202[0-3][0-1][0-2][0-3][0-1][0-9][0-5][0-9][0-5][0-9][0-5][0-9][0-9]{2}")
+transactionKeyRegex.random()
+// generate a random valid date in the format YYYYMMDD
+def generateDate: String = {
+  val random = new Random()
+  val year = random.between(2020, 2024)
+  val month = random.between(1, 13)
+  val day = random.between(1, 29)
+  f"$year%04d$month%02d$day%02d"
+}
+generateDate
 
-
+// generate a random date-time in format "transactionLocalDateTime": "2022-05-27T12:00:00.000Z"
+def generateDateTime: String = {
+  val random = new Random()
+  val year = random.between(2020, 2024)
+  val month = random.between(1, 13)
+  val day = random.between(1, 29)
+  val hour = random.between(0, 24)
+  val minute = random.between(0, 60)
+  val second = random.between(0, 60)
+  val millisecond = random.between(0, 1000)
+  f"$year%04d-$month%02d-$day%02dT$hour%02d:$minute%02d:$second%02d.$millisecond%03dZ"
+}
+generateDateTime
