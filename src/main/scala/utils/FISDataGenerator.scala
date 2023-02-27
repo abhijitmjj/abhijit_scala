@@ -10,7 +10,6 @@ import com.mifmif.common.regex.Generex
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonInclude.Include
 
-@JsonInclude(Include.NON_EMPTY)
 case class BaseTransactionAType(
     actionInitiatorCd: String = "",
     dataSetId: String = "",
@@ -494,11 +493,25 @@ class JsonBuilder {
 
 }
 
+object GenRegexObject {
+  val nameRegex = new Generex("[A-Z][a-z]{3,8}\\s[A-Z][a-z]{3,10}")
+  val lastNameRegex = new Generex("[A-Z][a-z]{3,8}")
+  val addressRegex = new Generex("[A-Z][a-z]{3,8}\\s[A-Z][a-z]{3,10}\\s[A-Z][a-z]{3,10}")
+  val cityRegex = new Generex("[A-Z][a-z]{3,8}")
+  val stateRegex = new Generex("[A-Z]{2}")
+  val zipRegex = new Generex("[0-9]{5}")
+  val phoneRegex = new Generex("[0-9]{3}-[0-9]{3}-[0-9]{4}")
+  val originatorToBeneficiaryInfoRegex = new Generex("[A-Z][a-z]{3,8}\\s[A-Z][a-z]{3,10}\\s[A-Z][a-z]{3,10}\\s[A-Z][a-z]{3,10}")
+  val accountNumberRegex = new Generex("[0-9]{13,14}")
+  val amountRegex = new Generex("[0-9]{1,10}\\.[0-9]{2}")
+}
 
 object GenerateMultipleJson {
   def generateRoutingNumber: String = {
     val random = new Random()
-    val prefix = f"${List(random.between(1, 13), random.between(21, 33), random.between(61,73))(random.nextInt(3))}%02d"
+    val prefix = f"${List(random.between(1, 13),
+                          random.between(21, 33),
+                          random.between(61,73))(random.nextInt(3))}%02d"
     val prefix_next = f"${random.between(0, 100)}%02d"
     val xxxx = prefix + prefix_next
     val yyyy = f"${random.between(0, 10001)}%04d"
@@ -512,7 +525,6 @@ object GenerateMultipleJson {
     s"$xxxx$yyyy$diff"
   }
 
-  // generate a random valid date in the format YYYYMMDD
   def generateDate: String = {
     val random = new Random()
     val year = random.between(2020, 2024)
@@ -538,28 +550,19 @@ object GenerateMultipleJson {
     val fileName = "sample_data.log" // output file name
     val random = new Random()
     val transactionLocalDateTime = LocalDateTime.of(2022, 5, 27, 12, 0, 0)
-    val nameRegex = new Generex("[A-Z][a-z]{3,8}\\s[A-Z][a-z]{3,10}")
-    val lastNameRegex = new Generex("[A-Z][a-z]{3,8}")
-    val addressRegex = new Generex("[A-Z][a-z]{3,8}\\s[A-Z][a-z]{3,10}\\s[A-Z][a-z]{3,10}")
-    val cityRegex = new Generex("[A-Z][a-z]{3,8}")
-    val stateRegex = new Generex("[A-Z]{2}")
-    val zipRegex = new Generex("[0-9]{5}")
-    val phoneRegex = new Generex("[0-9]{3}-[0-9]{3}-[0-9]{4}")
-    val originatorToBeneficiaryInfoRegex = new Generex("[A-Z][a-z]{3,8}\\s[A-Z][a-z]{3,10}\\s[A-Z][a-z]{3,10}\\s[A-Z][a-z]{3,10}")
-    // generate a random Long value between 10^13 and 10^14
-    val accountNumberRegex = new Generex("[0-9]{13,14}")
-    val amountRegex = new Generex("[0-9]{1,10}\\.[0-9]{2}")
-    // generate numObjects number of amount objects
-    val amounts = (1 to numObjects).map(i => amountRegex.random().toDouble)
-    // generate transactionKey regex; it looks like '2022063112345432'
+
+    val payeeAccounts = (1 to numObjects).map(i => GenRegexObject.accountNumberRegex.random())
+    
+    val amounts = (1 to numObjects).map(i => GenRegexObject.amountRegex.random().toDouble)
+    
     val transactionKeyRegex = new Generex(s"${generateDate}[0-9]{5}")
-    // generate transactionKey for each JSON object
     val transactionKeys = (1 to numObjects).map(i => transactionKeyRegex.random())
-    // generate transactionLocalDateTime for each JSON object
-    //val transactionLocalDateTimes = (1 to numObjects).map(i => transactionLocalDateTime.plusSeconds(i * 10).toString())
+    
     val transactionLocalDateTimes = (1 to numObjects).map(i => generateDateTime)
+    
     val accountKeyRegex = new Generex(s"466\\.${List("DP", "GL")(random.nextInt(2))}\\.[0-9]{7}")
     val accountKeys = (1 to numObjects).map(i => accountKeyRegex.random())
+    
     val jsonObjects = (1 to numObjects).map { i =>
       JObject(
         "id" -> JInt(i),
@@ -579,7 +582,6 @@ object GenerateMultipleJson {
           sourceCd = s"WireSystem_${random.nextInt(10) + 1}",
           transactionLocalDateTime = transactionLocalDateTimes(i-1),
           partyKey = s"partyKey_${random.nextInt(1000)}",
-          //transactionNormalizedDateTime = LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME)
           transactionNormalizedDateTime = transactionLocalDateTimes(i-1)
         ).toJObj(),
         
@@ -594,7 +596,7 @@ object GenerateMultipleJson {
 
         "monetaryTransactionB" -> MonetaryTransactionBType(
           fundsDirectionCd = List(0, 1)(random.nextInt(2)),
-          payeeDataAccountNumber = accountNumberRegex.random().toString(),
+          payeeDataAccountNumber = payeeAccounts(i-1),
           transactionId = transactionKeys(i-1),
           addendaRecordCount = random.nextInt(100),
           payeePartyKey = ""
@@ -606,7 +608,16 @@ object GenerateMultipleJson {
           accountOwnershipReference = AccountOwnershipType(),
           contactReference = ContactReferenceType(),
           addressData = AddressType(),
-          referenceUpdateDates = ReferenceUpdateDatesType(),
+          referenceUpdateDates = ReferenceUpdateDatesType(addressUpdateDate = generateDateTime,
+                                                          emailUpdateDate = generateDateTime,
+                                                          phoneUpdateDate = generateDateTime,
+                                                          infoUpdateDate = generateDateTime,
+                                                          nameUpdateDate = generateDateTime,
+                                                          mobilePhoneUpdateDate = generateDateTime,
+                                                          passwordUpdateDate = generateDateTime,
+                                                          phone2UpdateDate = generateDateTime,
+                                                          phone3UpdateDate = generateDateTime,
+                                                          pinUpdateDate = generateDateTime),
 
         ).toJObj(),
 
@@ -619,35 +630,30 @@ object GenerateMultipleJson {
         ).toJObj(),
 
         "trxMonitoredAccountData" -> TrxAccountDataType(
-          // take only the last digits after point
           accountNumber = accountKeys(i-1).split("\\.")(2),
-          //accountNumber = accountKeys(i-1),
-          overdraftBalance = random.nextDouble() * 1000000,
+          overdraftBalance = GenRegexObject.amountRegex.random().toDouble,
           currencyCd = List("USD", "EUR", "GBP", "JPY", "CNY")(random.nextInt(5)),
-          currentBalance = Option(random.nextDouble() * 1000000),
+          currentBalance = Option(GenRegexObject.amountRegex.random().toDouble),
         ).toJObj(),
 
         "trxPayeeAccountData" -> JObject(
-          // a random 10 digit accountNumber
-          "accountNumber" -> JInt(random.between(1000000000, 9999999999L)),
-          "fiName" -> JString(nameRegex.random()),
-          // a valid random ABA routing number
+          "accountNumber" -> JString(payeeAccounts(i-1)),
+          "fiName" -> JString(GenRegexObject.nameRegex.random()),
           "routingNumber" -> JLong(generateRoutingNumber.toLong),
           "routingType" -> JString("ABA")
         ),
         "trxPayeePartyData" -> JObject(
           "addressData" -> JObject(
-            "addressLine1" -> JString(addressRegex.random()),
+            "addressLine1" -> JString(GenRegexObject.addressRegex.random()),
             "countryCd" -> JString("US"),
-            "state" -> JString(stateRegex.random()),
+            "state" -> JString(GenRegexObject.stateRegex.random()),
           ),
-          "lastName" -> JString(lastNameRegex.random()),
-          // random string with spaces
-          "name" -> JString(nameRegex.random())
+          "lastName" -> JString(GenRegexObject.lastNameRegex.random()),
+          "name" -> JString(GenRegexObject.nameRegex.random())
         ),
         "wirePayee" -> JObject(
           "originatorToBeneficiaryInfo" -> JString(random.alphanumeric.take(random.between(1,100)).mkString),
-          "wirePayeeAddress" -> JString(addressRegex.random()),
+          "wirePayeeAddress" -> JString(GenRegexObject.addressRegex.random()),
         ),
 
         "channel" -> JString(List("ONLINE", "OFFLINE", "MOBILE", "ATM")(random.nextInt(4)))

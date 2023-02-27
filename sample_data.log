@@ -2,34 +2,34 @@
   "id" : 1,
   "amount" : {
     "originalCurrencyCd" : "CNY",
-    "originalAmount" : 310000.0,
-    "normalizedOriginalAmount" : 8.18,
-    "regionNormalizedOriginalAmount" : 820000.0,
-    "accountAmount" : 120000.0,
-    "oppAccountAmount" : 140000.0
+    "originalAmount" : 140000.0,
+    "normalizedOriginalAmount" : 63.82,
+    "regionNormalizedOriginalAmount" : 310000.0,
+    "accountAmount" : 610000.0,
+    "oppAccountAmount" : 220000.0
   },
   "baseTransactionA" : {
     "resendDueToFailureInd" : false,
-    "partyKey" : "partyKey_806",
-    "transactionLocalDateTime" : "2022-06-27T21:38:46.053Z",
-    "transactionNormalizedDateTime" : "2022-06-27T21:38:46.053Z",
-    "sourceCd" : "WireSystem_8",
-    "channel" : "MOBILE"
+    "partyKey" : "partyKey_98",
+    "transactionLocalDateTime" : "2022-09-27T03:01:36.141Z",
+    "transactionNormalizedDateTime" : "2022-09-27T03:01:36.141Z",
+    "sourceCd" : "WireSystem_10",
+    "channel" : "OFFLINE"
   },
   "baseTransactionB" : {
-    "accountKey" : "466.GL.8938508"
+    "accountKey" : "466.DP.8834942"
   },
   "baseTransactionC" : {
-    "transactionKey" : "2020041275596",
-    "transactionType" : "Domestic"
+    "transactionKey" : "2023010429555",
+    "transactionType" : "International"
   },
   "monetaryTransactionB" : {
-    "addendaRecordCount" : 4,
+    "addendaRecordCount" : 57,
     "fundsDirectionCd" : 0,
     "isTruncated" : false,
     "isTrxOnUs" : false,
-    "payeeDataAccountNumber" : "19167614693933",
-    "transactionId" : "2020041275596",
+    "payeeDataAccountNumber" : "36791593590284",
+    "transactionId" : "2023010429555",
     "isRedeposit" : false
   },
   "partyReference" : {
@@ -46,16 +46,325 @@
       "savingsInd" : false
     },
     "referenceUpdateDates" : {
-      "addressUpdateDate" : "2023-02-27T17:02:50.266130519",
-      "emailUpdateDate" : "2023-02-27T17:02:50.268409591",
-      "infoUpdateDate" : "2023-02-27T17:02:50.268444384",
-      "mobilePhoneUpdateDate" : "2023-02-27T17:02:50.268468075",
-      "nameUpdateDate" : "2023-02-27T17:02:50.268490556",
-      "passwordUpdateDate" : "2023-02-27T17:02:50.26851287",
-      "phoneUpdateDate" : "2023-02-27T17:02:50.268535117",
-      "phone2UpdateDate" : "2023-02-27T17:02:50.268557191",
-      "phone3UpdateDate" : "2023-02-27T17:02:50.268579176",
-      "pinUpdateDate" : "2023-02-27T17:02:50.268601024"
+      "addressUpdateDate" : "2022-03-24T19:12:06.560Z",
+      "emailUpdateDate" : "2022-10-16T04:32:21.654Z",
+      "infoUpdateDate" : "2023-02-26T17:51:20.439Z",
+      "mobilePhoneUpdateDate" : "2021-05-22T03:51:04.071Z",
+      "nameUpdateDate" : "2022-02-03T06:28:19.698Z",
+      "passwordUpdateDate" : "2022-04-22T18:45:22.245Z",
+      "phoneUpdateDate" : "2020-04-28T23:44:50.658Z",
+      "phone2UpdateDate" : "2021-02-19T16:53:29.594Z",
+      "phone3UpdateDate" : "2022-07-12T11:13:47.471Z",
+      "pinUpdateDate" : "2023-06-22T04:23:15.378Z"
+    }
+  },
+  "title" : "detectionRequestWire",
+  "transferTransaction" : {
+    "createdFromTemplateInd" : false,
+    "emailNotificationInd" : false,
+    "isAddEditPayee" : true,
+    "isAddEditPayor" : false,
+    "isEbill" : false,
+    "isLastTransactionInBatch" : false,
+    "isStandingOrder" : false,
+    "executionDate" : "2023-02-27T18:01:52.339772624",
+    "paymentSpeedCd" : "1",
+    "numberOfApproversRequired" : 0
+  },
+  "trxMonitoredAccountData" : {
+    "accountNumber" : "8834942",
+    "currencyCd" : "EUR",
+    "currentBalance" : 0.88,
+    "overdraftBalance" : 6.27,
+    "uncollectedBalance" : 0.0,
+    "availableBalance" : 0.0,
+    "ledgerBalance" : 0.0
+  },
+  "trxPayeeAccountData" : {
+    "accountNumber" : "36791593590284",
+    "fiName" : "Bjiat\rZbnz",
+    "routingNumber" : 663651553,
+    "routingType" : "ABA"
+  },
+  "trxPayeePartyData" : {
+    "addressData" : {
+      "addressLine1" : "Ncvpb Icpg Qfcwh",
+      "countryCd" : "US",
+      "state" : "SB"
+    },
+    "lastName" : "Nmkfm",
+    "name" : "Bxax\rZsfqltgrbld"
+  },
+  "wirePayee" : {
+    "originatorToBeneficiaryInfo" : "otEbhisOeeufkxzrk",
+    "wirePayeeAddress" : "Vsxg\fUycr\rWgjxmqc"
+  },
+  "channel" : "ONLINE"
+}
+{
+  "id" : 2,
+  "amount" : {
+    "originalCurrencyCd" : "USD",
+    "originalAmount" : 270000.0,
+    "normalizedOriginalAmount" : 1392.49,
+    "regionNormalizedOriginalAmount" : 560000.0,
+    "accountAmount" : 530000.0,
+    "oppAccountAmount" : 790000.0
+  },
+  "baseTransactionA" : {
+    "resendDueToFailureInd" : true,
+    "partyKey" : "partyKey_990",
+    "transactionLocalDateTime" : "2021-01-10T19:45:04.178Z",
+    "transactionNormalizedDateTime" : "2021-01-10T19:45:04.178Z",
+    "sourceCd" : "WireSystem_5",
+    "channel" : "ATM"
+  },
+  "baseTransactionB" : {
+    "accountKey" : "466.DP.8543178"
+  },
+  "baseTransactionC" : {
+    "transactionKey" : "2023010439851",
+    "transactionType" : "International"
+  },
+  "monetaryTransactionB" : {
+    "addendaRecordCount" : 81,
+    "fundsDirectionCd" : 0,
+    "isTruncated" : false,
+    "isTrxOnUs" : false,
+    "payeeDataAccountNumber" : "23097166261449",
+    "transactionId" : "2023010439851",
+    "isRedeposit" : false
+  },
+  "partyReference" : {
+    "partyType" : "Individual",
+    "isOurEmployee" : false,
+    "accountOwnershipReference" : {
+      "bankingInd" : false,
+      "creditCardInd" : false,
+      "insuranceInd" : false,
+      "investmentsInd" : false,
+      "loanInd" : false,
+      "longSavingsInd" : false,
+      "mortgageInd" : false,
+      "savingsInd" : false
+    },
+    "referenceUpdateDates" : {
+      "addressUpdateDate" : "2023-06-09T01:06:18.901Z",
+      "emailUpdateDate" : "2022-07-10T14:05:21.567Z",
+      "infoUpdateDate" : "2022-06-03T13:18:03.968Z",
+      "mobilePhoneUpdateDate" : "2023-08-01T21:29:07.664Z",
+      "nameUpdateDate" : "2021-09-17T14:08:16.814Z",
+      "passwordUpdateDate" : "2020-07-05T09:23:38.583Z",
+      "phoneUpdateDate" : "2022-03-12T19:19:00.130Z",
+      "phone2UpdateDate" : "2020-11-23T09:02:38.588Z",
+      "phone3UpdateDate" : "2020-02-07T07:27:04.538Z",
+      "pinUpdateDate" : "2022-01-27T03:18:43.744Z"
+    }
+  },
+  "title" : "detectionRequestWire",
+  "transferTransaction" : {
+    "createdFromTemplateInd" : false,
+    "emailNotificationInd" : false,
+    "isAddEditPayee" : false,
+    "isAddEditPayor" : false,
+    "isEbill" : false,
+    "isLastTransactionInBatch" : false,
+    "isStandingOrder" : true,
+    "executionDate" : "2023-02-27T18:01:52.351255091",
+    "paymentSpeedCd" : "1",
+    "numberOfApproversRequired" : 0
+  },
+  "trxMonitoredAccountData" : {
+    "accountNumber" : "8543178",
+    "currencyCd" : "CNY",
+    "currentBalance" : 368.75,
+    "overdraftBalance" : 650.14,
+    "uncollectedBalance" : 0.0,
+    "availableBalance" : 0.0,
+    "ledgerBalance" : 0.0
+  },
+  "trxPayeeAccountData" : {
+    "accountNumber" : "23097166261449",
+    "fiName" : "Sfvr\tXocefnhy",
+    "routingNumber" : 56824515,
+    "routingType" : "ABA"
+  },
+  "trxPayeePartyData" : {
+    "addressData" : {
+      "addressLine1" : "Gmyw\nDnpj\tNbhaj",
+      "countryCd" : "US",
+      "state" : "NH"
+    },
+    "lastName" : "Rlhaduuau",
+    "name" : "Bete\fIfvntgeesd"
+  },
+  "wirePayee" : {
+    "originatorToBeneficiaryInfo" : "JUJmDR4mfEMsGZnOjRlrLkuGHcqm993rGFmcaeMcOZ1SI1kDSDPtcxHvCyQxNElpHPmkMtRej0uKRprWxpcC",
+    "wirePayeeAddress" : "Ldqciop\fSfyc\nKrzg"
+  },
+  "channel" : "ATM"
+}
+{
+  "id" : 3,
+  "amount" : {
+    "originalCurrencyCd" : "JPY",
+    "originalAmount" : 860000.0,
+    "normalizedOriginalAmount" : 30.82,
+    "regionNormalizedOriginalAmount" : 490000.0,
+    "accountAmount" : 970000.0,
+    "oppAccountAmount" : 660000.0
+  },
+  "baseTransactionA" : {
+    "resendDueToFailureInd" : true,
+    "partyKey" : "partyKey_320",
+    "transactionLocalDateTime" : "2022-04-05T14:22:45.445Z",
+    "transactionNormalizedDateTime" : "2022-04-05T14:22:45.445Z",
+    "sourceCd" : "WireSystem_1",
+    "channel" : "ONLINE"
+  },
+  "baseTransactionB" : {
+    "accountKey" : "466.DP.3211048"
+  },
+  "baseTransactionC" : {
+    "transactionKey" : "2023010442273",
+    "transactionType" : "Domestic"
+  },
+  "monetaryTransactionB" : {
+    "addendaRecordCount" : 92,
+    "fundsDirectionCd" : 1,
+    "isTruncated" : false,
+    "isTrxOnUs" : false,
+    "payeeDataAccountNumber" : "91394281764329",
+    "transactionId" : "2023010442273",
+    "isRedeposit" : false
+  },
+  "partyReference" : {
+    "partyType" : "Individual",
+    "isOurEmployee" : false,
+    "accountOwnershipReference" : {
+      "bankingInd" : false,
+      "creditCardInd" : false,
+      "insuranceInd" : false,
+      "investmentsInd" : false,
+      "loanInd" : false,
+      "longSavingsInd" : false,
+      "mortgageInd" : false,
+      "savingsInd" : false
+    },
+    "referenceUpdateDates" : {
+      "addressUpdateDate" : "2020-09-16T04:05:46.530Z",
+      "emailUpdateDate" : "2020-01-04T21:18:31.908Z",
+      "infoUpdateDate" : "2022-02-25T12:19:08.622Z",
+      "mobilePhoneUpdateDate" : "2023-05-27T22:19:18.205Z",
+      "nameUpdateDate" : "2023-05-08T09:47:26.889Z",
+      "passwordUpdateDate" : "2021-07-09T00:11:53.790Z",
+      "phoneUpdateDate" : "2021-10-10T22:11:52.138Z",
+      "phone2UpdateDate" : "2022-11-13T23:09:29.579Z",
+      "phone3UpdateDate" : "2020-05-13T03:59:49.415Z",
+      "pinUpdateDate" : "2021-05-07T16:13:17.075Z"
+    }
+  },
+  "title" : "detectionRequestWire",
+  "transferTransaction" : {
+    "createdFromTemplateInd" : false,
+    "emailNotificationInd" : false,
+    "isAddEditPayee" : true,
+    "isAddEditPayor" : false,
+    "isEbill" : false,
+    "isLastTransactionInBatch" : false,
+    "isStandingOrder" : false,
+    "executionDate" : "2023-02-27T18:01:52.354216319",
+    "paymentSpeedCd" : "1",
+    "numberOfApproversRequired" : 0
+  },
+  "trxMonitoredAccountData" : {
+    "accountNumber" : "3211048",
+    "currencyCd" : "EUR",
+    "currentBalance" : 9.93,
+    "overdraftBalance" : 73.85,
+    "uncollectedBalance" : 0.0,
+    "availableBalance" : 0.0,
+    "ledgerBalance" : 0.0
+  },
+  "trxPayeeAccountData" : {
+    "accountNumber" : "91394281764329",
+    "fiName" : "Uhezk\nDbynd",
+    "routingNumber" : 293802743,
+    "routingType" : "ABA"
+  },
+  "trxPayeePartyData" : {
+    "addressData" : {
+      "addressLine1" : "Kajtt\nYtqk\fJqjglydcsrj",
+      "countryCd" : "US",
+      "state" : "WJ"
+    },
+    "lastName" : "Rdugcvg",
+    "name" : "Ivbu Xzdu"
+  },
+  "wirePayee" : {
+    "originatorToBeneficiaryInfo" : "JTNDJqQVdozw8seseTRe55PEsg5gCGT8l7KMSvo",
+    "wirePayeeAddress" : "Ffgh\tExvi Hjkhzoylk"
+  },
+  "channel" : "MOBILE"
+}
+{
+  "id" : 4,
+  "amount" : {
+    "originalCurrencyCd" : "CNY",
+    "originalAmount" : 970000.0,
+    "normalizedOriginalAmount" : 5.35,
+    "regionNormalizedOriginalAmount" : 890000.0,
+    "accountAmount" : 550000.0,
+    "oppAccountAmount" : 350000.0
+  },
+  "baseTransactionA" : {
+    "resendDueToFailureInd" : false,
+    "partyKey" : "partyKey_522",
+    "transactionLocalDateTime" : "2021-09-12T05:33:16.399Z",
+    "transactionNormalizedDateTime" : "2021-09-12T05:33:16.399Z",
+    "sourceCd" : "WireSystem_4",
+    "channel" : "ATM"
+  },
+  "baseTransactionB" : {
+    "accountKey" : "466.DP.5776796"
+  },
+  "baseTransactionC" : {
+    "transactionKey" : "2023010433196",
+    "transactionType" : "Domestic"
+  },
+  "monetaryTransactionB" : {
+    "addendaRecordCount" : 79,
+    "fundsDirectionCd" : 1,
+    "isTruncated" : false,
+    "isTrxOnUs" : false,
+    "payeeDataAccountNumber" : "3027898749398",
+    "transactionId" : "2023010433196",
+    "isRedeposit" : false
+  },
+  "partyReference" : {
+    "partyType" : "Individual",
+    "isOurEmployee" : false,
+    "accountOwnershipReference" : {
+      "bankingInd" : false,
+      "creditCardInd" : false,
+      "insuranceInd" : false,
+      "investmentsInd" : false,
+      "loanInd" : false,
+      "longSavingsInd" : false,
+      "mortgageInd" : false,
+      "savingsInd" : false
+    },
+    "referenceUpdateDates" : {
+      "addressUpdateDate" : "2020-05-04T18:21:27.113Z",
+      "emailUpdateDate" : "2023-12-01T08:28:11.976Z",
+      "infoUpdateDate" : "2020-02-11T17:47:23.547Z",
+      "mobilePhoneUpdateDate" : "2023-06-27T23:17:52.864Z",
+      "nameUpdateDate" : "2022-05-24T00:13:04.403Z",
+      "passwordUpdateDate" : "2020-05-05T17:41:34.180Z",
+      "phoneUpdateDate" : "2021-01-26T18:05:05.384Z",
+      "phone2UpdateDate" : "2021-09-03T04:50:53.933Z",
+      "phone3UpdateDate" : "2023-02-13T12:05:44.102Z",
+      "pinUpdateDate" : "2023-03-21T15:19:34.655Z"
     }
   },
   "title" : "detectionRequestWire",
@@ -67,381 +376,72 @@
     "isEbill" : false,
     "isLastTransactionInBatch" : false,
     "isStandingOrder" : false,
-    "executionDate" : "2023-02-27T17:02:50.269968024",
+    "executionDate" : "2023-02-27T18:01:52.356254971",
     "paymentSpeedCd" : "1",
     "numberOfApproversRequired" : 0
   },
   "trxMonitoredAccountData" : {
-    "accountNumber" : "8938508",
-    "currencyCd" : "CNY",
-    "currentBalance" : 821915.6720688385,
-    "overdraftBalance" : 697384.2586765821,
-    "uncollectedBalance" : 0.0,
-    "availableBalance" : 0.0,
-    "ledgerBalance" : 0.0
-  },
-  "trxPayeeAccountData" : {
-    "accountNumber" : 1428725545,
-    "fiName" : "Zwdmk Weaa",
-    "routingNumber" : 694766776,
-    "routingType" : "ABA"
-  },
-  "trxPayeePartyData" : {
-    "addressData" : {
-      "addressLine1" : "Dfca Tpotzy\nOahb",
-      "countryCd" : "US",
-      "state" : "GD"
-    },
-    "lastName" : "Jefv",
-    "name" : "Fqxq Htdwtnyhrfs"
-  },
-  "wirePayee" : {
-    "originatorToBeneficiaryInfo" : "XfXYwkMDg5Vm4uXGpdYfPzJBcTJKu3VvLIyxRf0AnER0BFDwQKvb2yO9ZW1wFKEH",
-    "wirePayeeAddress" : "Juyn\fNzyt\fRububvbr"
-  },
-  "channel" : "ATM"
-}
-{
-  "id" : 2,
-  "amount" : {
-    "originalCurrencyCd" : "JPY",
-    "originalAmount" : 0.0,
-    "normalizedOriginalAmount" : 4053.65,
-    "regionNormalizedOriginalAmount" : 90000.0,
-    "accountAmount" : 60000.0,
-    "oppAccountAmount" : 920000.0
-  },
-  "baseTransactionA" : {
-    "resendDueToFailureInd" : true,
-    "partyKey" : "partyKey_884",
-    "transactionLocalDateTime" : "2021-05-18T14:14:18.258Z",
-    "transactionNormalizedDateTime" : "2021-05-18T14:14:18.258Z",
-    "sourceCd" : "WireSystem_8",
-    "channel" : "ATM"
-  },
-  "baseTransactionB" : {
-    "accountKey" : "466.GL.5566380"
-  },
-  "baseTransactionC" : {
-    "transactionKey" : "2020041209127",
-    "transactionType" : "Domestic"
-  },
-  "monetaryTransactionB" : {
-    "addendaRecordCount" : 81,
-    "fundsDirectionCd" : 1,
-    "isTruncated" : false,
-    "isTrxOnUs" : false,
-    "payeeDataAccountNumber" : "73041773037091",
-    "transactionId" : "2020041209127",
-    "isRedeposit" : false
-  },
-  "partyReference" : {
-    "partyType" : "Individual",
-    "isOurEmployee" : false,
-    "accountOwnershipReference" : {
-      "bankingInd" : false,
-      "creditCardInd" : false,
-      "insuranceInd" : false,
-      "investmentsInd" : false,
-      "loanInd" : false,
-      "longSavingsInd" : false,
-      "mortgageInd" : false,
-      "savingsInd" : false
-    },
-    "referenceUpdateDates" : {
-      "addressUpdateDate" : "2023-02-27T17:02:50.280828303",
-      "emailUpdateDate" : "2023-02-27T17:02:50.280892091",
-      "infoUpdateDate" : "2023-02-27T17:02:50.280917816",
-      "mobilePhoneUpdateDate" : "2023-02-27T17:02:50.280941243",
-      "nameUpdateDate" : "2023-02-27T17:02:50.280980099",
-      "passwordUpdateDate" : "2023-02-27T17:02:50.28104773",
-      "phoneUpdateDate" : "2023-02-27T17:02:50.281071312",
-      "phone2UpdateDate" : "2023-02-27T17:02:50.281093413",
-      "phone3UpdateDate" : "2023-02-27T17:02:50.281150549",
-      "pinUpdateDate" : "2023-02-27T17:02:50.281174505"
-    }
-  },
-  "title" : "detectionRequestWire",
-  "transferTransaction" : {
-    "createdFromTemplateInd" : false,
-    "emailNotificationInd" : false,
-    "isAddEditPayee" : true,
-    "isAddEditPayor" : false,
-    "isEbill" : false,
-    "isLastTransactionInBatch" : false,
-    "isStandingOrder" : true,
-    "executionDate" : "2023-02-27T17:02:50.281609959",
-    "paymentSpeedCd" : "0",
-    "numberOfApproversRequired" : 0
-  },
-  "trxMonitoredAccountData" : {
-    "accountNumber" : "5566380",
+    "accountNumber" : "5776796",
     "currencyCd" : "JPY",
-    "currentBalance" : 371727.3207016241,
-    "overdraftBalance" : 753711.9665874835,
+    "currentBalance" : 0.76,
+    "overdraftBalance" : 96.88,
     "uncollectedBalance" : 0.0,
     "availableBalance" : 0.0,
     "ledgerBalance" : 0.0
   },
   "trxPayeeAccountData" : {
-    "accountNumber" : 1116712643,
-    "fiName" : "Memv Dsanb",
-    "routingNumber" : 251721167,
+    "accountNumber" : "3027898749398",
+    "fiName" : "Gxyfq\tRzvk",
+    "routingNumber" : 319928161,
     "routingType" : "ABA"
   },
   "trxPayeePartyData" : {
     "addressData" : {
-      "addressLine1" : "Ziea\fPpmwn\rQhsj",
+      "addressLine1" : "Ffadv\tSztp\rKsiq",
       "countryCd" : "US",
-      "state" : "BN"
+      "state" : "BA"
     },
-    "lastName" : "Guqama",
-    "name" : "Tlfn\tRgnep"
+    "lastName" : "Xnaf",
+    "name" : "Oyag\rXvlzbjtubsb"
   },
   "wirePayee" : {
-    "originatorToBeneficiaryInfo" : "Y5wWCJKAOdTd7Gp2cyrmTiZACN1s",
-    "wirePayeeAddress" : "Oepo\fQfoqdt Arkbnii"
-  },
-  "channel" : "OFFLINE"
-}
-{
-  "id" : 3,
-  "amount" : {
-    "originalCurrencyCd" : "GBP",
-    "originalAmount" : 260000.0,
-    "normalizedOriginalAmount" : 0.79,
-    "regionNormalizedOriginalAmount" : 620000.0,
-    "accountAmount" : 50000.0,
-    "oppAccountAmount" : 770000.0
-  },
-  "baseTransactionA" : {
-    "resendDueToFailureInd" : false,
-    "partyKey" : "partyKey_120",
-    "transactionLocalDateTime" : "2020-05-19T14:04:41.370Z",
-    "transactionNormalizedDateTime" : "2020-05-19T14:04:41.370Z",
-    "sourceCd" : "WireSystem_5",
-    "channel" : "ONLINE"
-  },
-  "baseTransactionB" : {
-    "accountKey" : "466.GL.6302024"
-  },
-  "baseTransactionC" : {
-    "transactionKey" : "2020041246070",
-    "transactionType" : "International"
-  },
-  "monetaryTransactionB" : {
-    "addendaRecordCount" : 67,
-    "fundsDirectionCd" : 1,
-    "isTruncated" : false,
-    "isTrxOnUs" : false,
-    "payeeDataAccountNumber" : "77511935810367",
-    "transactionId" : "2020041246070",
-    "isRedeposit" : false
-  },
-  "partyReference" : {
-    "partyType" : "Organization",
-    "isOurEmployee" : false,
-    "accountOwnershipReference" : {
-      "bankingInd" : false,
-      "creditCardInd" : false,
-      "insuranceInd" : false,
-      "investmentsInd" : false,
-      "loanInd" : false,
-      "longSavingsInd" : false,
-      "mortgageInd" : false,
-      "savingsInd" : false
-    },
-    "referenceUpdateDates" : {
-      "addressUpdateDate" : "2023-02-27T17:02:50.282774439",
-      "emailUpdateDate" : "2023-02-27T17:02:50.282812394",
-      "infoUpdateDate" : "2023-02-27T17:02:50.28287418",
-      "mobilePhoneUpdateDate" : "2023-02-27T17:02:50.282898889",
-      "nameUpdateDate" : "2023-02-27T17:02:50.282978773",
-      "passwordUpdateDate" : "2023-02-27T17:02:50.283004199",
-      "phoneUpdateDate" : "2023-02-27T17:02:50.283025976",
-      "phone2UpdateDate" : "2023-02-27T17:02:50.283135593",
-      "phone3UpdateDate" : "2023-02-27T17:02:50.283162421",
-      "pinUpdateDate" : "2023-02-27T17:02:50.28324528"
-    }
-  },
-  "title" : "detectionRequestWire",
-  "transferTransaction" : {
-    "createdFromTemplateInd" : false,
-    "emailNotificationInd" : false,
-    "isAddEditPayee" : true,
-    "isAddEditPayor" : false,
-    "isEbill" : false,
-    "isLastTransactionInBatch" : false,
-    "isStandingOrder" : true,
-    "executionDate" : "2023-02-27T17:02:50.283382321",
-    "paymentSpeedCd" : "0",
-    "numberOfApproversRequired" : 0
-  },
-  "trxMonitoredAccountData" : {
-    "accountNumber" : "6302024",
-    "currencyCd" : "CNY",
-    "currentBalance" : 136007.33674370547,
-    "overdraftBalance" : 602601.3394696686,
-    "uncollectedBalance" : 0.0,
-    "availableBalance" : 0.0,
-    "ledgerBalance" : 0.0
-  },
-  "trxPayeeAccountData" : {
-    "accountNumber" : 5649452832,
-    "fiName" : "Zkvyq\fWipohslj",
-    "routingNumber" : 32751013,
-    "routingType" : "ABA"
-  },
-  "trxPayeePartyData" : {
-    "addressData" : {
-      "addressLine1" : "Cadn\nQbat\tDxpokpfslp",
-      "countryCd" : "US",
-      "state" : "AD"
-    },
-    "lastName" : "Jctbm",
-    "name" : "Ebju\nExfiufz"
-  },
-  "wirePayee" : {
-    "originatorToBeneficiaryInfo" : "LDCHtIBKStzQlDVS5OJbLbPvn6gkMJeMrBVCYUhWoeCA5mO5s7puF4Cger",
-    "wirePayeeAddress" : "Uxmo Ixjm\fNirlykry"
-  },
-  "channel" : "ONLINE"
-}
-{
-  "id" : 4,
-  "amount" : {
-    "originalCurrencyCd" : "CNY",
-    "originalAmount" : 740000.0,
-    "normalizedOriginalAmount" : 52.76,
-    "regionNormalizedOriginalAmount" : 700000.0,
-    "accountAmount" : 620000.0,
-    "oppAccountAmount" : 730000.0
-  },
-  "baseTransactionA" : {
-    "resendDueToFailureInd" : false,
-    "partyKey" : "partyKey_828",
-    "transactionLocalDateTime" : "2021-10-06T22:23:38.997Z",
-    "transactionNormalizedDateTime" : "2021-10-06T22:23:38.997Z",
-    "sourceCd" : "WireSystem_3",
-    "channel" : "ATM"
-  },
-  "baseTransactionB" : {
-    "accountKey" : "466.GL.7661083"
-  },
-  "baseTransactionC" : {
-    "transactionKey" : "2020041215508",
-    "transactionType" : "Domestic"
-  },
-  "monetaryTransactionB" : {
-    "addendaRecordCount" : 34,
-    "fundsDirectionCd" : 1,
-    "isTruncated" : false,
-    "isTrxOnUs" : false,
-    "payeeDataAccountNumber" : "74032489315613",
-    "transactionId" : "2020041215508",
-    "isRedeposit" : false
-  },
-  "partyReference" : {
-    "partyType" : "Individual",
-    "isOurEmployee" : false,
-    "accountOwnershipReference" : {
-      "bankingInd" : false,
-      "creditCardInd" : false,
-      "insuranceInd" : false,
-      "investmentsInd" : false,
-      "loanInd" : false,
-      "longSavingsInd" : false,
-      "mortgageInd" : false,
-      "savingsInd" : false
-    },
-    "referenceUpdateDates" : {
-      "addressUpdateDate" : "2023-02-27T17:02:50.284524806",
-      "emailUpdateDate" : "2023-02-27T17:02:50.284564275",
-      "infoUpdateDate" : "2023-02-27T17:02:50.284582245",
-      "mobilePhoneUpdateDate" : "2023-02-27T17:02:50.284621056",
-      "nameUpdateDate" : "2023-02-27T17:02:50.284707834",
-      "passwordUpdateDate" : "2023-02-27T17:02:50.284728111",
-      "phoneUpdateDate" : "2023-02-27T17:02:50.284747177",
-      "phone2UpdateDate" : "2023-02-27T17:02:50.284765648",
-      "phone3UpdateDate" : "2023-02-27T17:02:50.284824941",
-      "pinUpdateDate" : "2023-02-27T17:02:50.28491907"
-    }
-  },
-  "title" : "detectionRequestWire",
-  "transferTransaction" : {
-    "createdFromTemplateInd" : false,
-    "emailNotificationInd" : false,
-    "isAddEditPayee" : true,
-    "isAddEditPayor" : false,
-    "isEbill" : false,
-    "isLastTransactionInBatch" : false,
-    "isStandingOrder" : true,
-    "executionDate" : "2023-02-27T17:02:50.285352133",
-    "paymentSpeedCd" : "1",
-    "numberOfApproversRequired" : 0
-  },
-  "trxMonitoredAccountData" : {
-    "accountNumber" : "7661083",
-    "currencyCd" : "USD",
-    "currentBalance" : 9222.312388836974,
-    "overdraftBalance" : 910240.9958986734,
-    "uncollectedBalance" : 0.0,
-    "availableBalance" : 0.0,
-    "ledgerBalance" : 0.0
-  },
-  "trxPayeeAccountData" : {
-    "accountNumber" : 5152995518,
-    "fiName" : "Vfqp Pzzdaj",
-    "routingNumber" : 612265246,
-    "routingType" : "ABA"
-  },
-  "trxPayeePartyData" : {
-    "addressData" : {
-      "addressLine1" : "Hqudi Cadz Eokqnv",
-      "countryCd" : "US",
-      "state" : "JU"
-    },
-    "lastName" : "Uwhmj",
-    "name" : "Plzz\fSwbto"
-  },
-  "wirePayee" : {
-    "originatorToBeneficiaryInfo" : "OUHxaCJR5Dy4PL8AcpYVkwxz9fhyifMAAv4Ghe6a0lpfy1hnTl6r",
-    "wirePayeeAddress" : "Jjji\rRdrj\nJvxp"
+    "originatorToBeneficiaryInfo" : "iKLwUbqPs05J1YsSuoH450OA2RRCDK8CPTgMimzu0V7NF8tCHS",
+    "wirePayeeAddress" : "Ffedm\rZjby\rSciw"
   },
   "channel" : "ONLINE"
 }
 {
   "id" : 5,
   "amount" : {
-    "originalCurrencyCd" : "CNY",
-    "originalAmount" : 830000.0,
-    "normalizedOriginalAmount" : 4.84,
-    "regionNormalizedOriginalAmount" : 790000.0,
-    "accountAmount" : 570000.0,
-    "oppAccountAmount" : 500000.0
+    "originalCurrencyCd" : "EUR",
+    "originalAmount" : 50000.0,
+    "normalizedOriginalAmount" : 8.5,
+    "regionNormalizedOriginalAmount" : 490000.0,
+    "accountAmount" : 940000.0,
+    "oppAccountAmount" : 410000.0
   },
   "baseTransactionA" : {
-    "resendDueToFailureInd" : false,
-    "partyKey" : "partyKey_677",
-    "transactionLocalDateTime" : "2023-02-17T07:25:09.821Z",
-    "transactionNormalizedDateTime" : "2023-02-17T07:25:09.821Z",
-    "sourceCd" : "WireSystem_8",
-    "channel" : "ONLINE"
+    "resendDueToFailureInd" : true,
+    "partyKey" : "partyKey_970",
+    "transactionLocalDateTime" : "2021-10-18T23:51:34.096Z",
+    "transactionNormalizedDateTime" : "2021-10-18T23:51:34.096Z",
+    "sourceCd" : "WireSystem_4",
+    "channel" : "ATM"
   },
   "baseTransactionB" : {
-    "accountKey" : "466.GL.3188061"
+    "accountKey" : "466.DP.9096804"
   },
   "baseTransactionC" : {
-    "transactionKey" : "2020041284261",
-    "transactionType" : "Domestic"
+    "transactionKey" : "2023010458269",
+    "transactionType" : "International"
   },
   "monetaryTransactionB" : {
-    "addendaRecordCount" : 46,
-    "fundsDirectionCd" : 1,
+    "addendaRecordCount" : 42,
+    "fundsDirectionCd" : 0,
     "isTruncated" : false,
     "isTrxOnUs" : false,
-    "payeeDataAccountNumber" : "32146482408227",
-    "transactionId" : "2020041284261",
+    "payeeDataAccountNumber" : "75916574098805",
+    "transactionId" : "2023010458269",
     "isRedeposit" : false
   },
   "partyReference" : {
@@ -458,58 +458,58 @@
       "savingsInd" : false
     },
     "referenceUpdateDates" : {
-      "addressUpdateDate" : "2023-02-27T17:02:50.286105034",
-      "emailUpdateDate" : "2023-02-27T17:02:50.286134574",
-      "infoUpdateDate" : "2023-02-27T17:02:50.286149015",
-      "mobilePhoneUpdateDate" : "2023-02-27T17:02:50.286162465",
-      "nameUpdateDate" : "2023-02-27T17:02:50.28617512",
-      "passwordUpdateDate" : "2023-02-27T17:02:50.286187714",
-      "phoneUpdateDate" : "2023-02-27T17:02:50.286200804",
-      "phone2UpdateDate" : "2023-02-27T17:02:50.286275479",
-      "phone3UpdateDate" : "2023-02-27T17:02:50.286295976",
-      "pinUpdateDate" : "2023-02-27T17:02:50.286310911"
+      "addressUpdateDate" : "2022-01-04T16:52:01.676Z",
+      "emailUpdateDate" : "2023-03-25T14:24:46.488Z",
+      "infoUpdateDate" : "2023-10-07T06:00:52.480Z",
+      "mobilePhoneUpdateDate" : "2020-11-12T18:31:10.050Z",
+      "nameUpdateDate" : "2022-11-19T09:38:06.667Z",
+      "passwordUpdateDate" : "2023-07-12T09:21:52.225Z",
+      "phoneUpdateDate" : "2022-06-15T23:14:07.197Z",
+      "phone2UpdateDate" : "2020-07-04T06:33:05.057Z",
+      "phone3UpdateDate" : "2022-04-03T11:23:30.833Z",
+      "pinUpdateDate" : "2023-11-17T05:58:26.349Z"
     }
   },
   "title" : "detectionRequestWire",
   "transferTransaction" : {
     "createdFromTemplateInd" : false,
     "emailNotificationInd" : false,
-    "isAddEditPayee" : true,
+    "isAddEditPayee" : false,
     "isAddEditPayor" : false,
     "isEbill" : false,
     "isLastTransactionInBatch" : false,
-    "isStandingOrder" : false,
-    "executionDate" : "2023-02-27T17:02:50.286362748",
+    "isStandingOrder" : true,
+    "executionDate" : "2023-02-27T18:01:52.360328215",
     "paymentSpeedCd" : "1",
     "numberOfApproversRequired" : 0
   },
   "trxMonitoredAccountData" : {
-    "accountNumber" : "3188061",
-    "currencyCd" : "EUR",
-    "currentBalance" : 351230.6149326051,
-    "overdraftBalance" : 370131.6884011664,
+    "accountNumber" : "9096804",
+    "currencyCd" : "USD",
+    "currentBalance" : 7.22,
+    "overdraftBalance" : 3.16,
     "uncollectedBalance" : 0.0,
     "availableBalance" : 0.0,
     "ledgerBalance" : 0.0
   },
   "trxPayeeAccountData" : {
-    "accountNumber" : 8397115457,
-    "fiName" : "Grpx\nGmtbf",
-    "routingNumber" : 117199341,
+    "accountNumber" : "75916574098805",
+    "fiName" : "Xggco Lpce",
+    "routingNumber" : 109373298,
     "routingType" : "ABA"
   },
   "trxPayeePartyData" : {
     "addressData" : {
-      "addressLine1" : "Yabh\nVtuk\tWvdcauzwm",
+      "addressLine1" : "Ccyx Debz\nCdveoy",
       "countryCd" : "US",
-      "state" : "NN"
+      "state" : "AL"
     },
-    "lastName" : "Vkvomxn",
-    "name" : "Zrwub\tHamnw"
+    "lastName" : "Wpkciowbl",
+    "name" : "Dbcl\nVvkg"
   },
   "wirePayee" : {
-    "originatorToBeneficiaryInfo" : "tzsWoYdDAyVnc",
-    "wirePayeeAddress" : "Cjzx Oecb\fOdjpze"
+    "originatorToBeneficiaryInfo" : "CfUATvOD7SK6scOCshgfiWpToOVZg08J41xqXb8zOdxFgj9PqXYeMVtICkf2CWBj9NNnK9E7Qpa0Ykolem",
+    "wirePayeeAddress" : "Kloo\rMmmoy Ymwc"
   },
-  "channel" : "MOBILE"
+  "channel" : "ATM"
 }
