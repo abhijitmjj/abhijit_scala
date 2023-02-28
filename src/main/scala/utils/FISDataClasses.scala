@@ -8,22 +8,22 @@ case class BaseTransactionAType(
     actionInitiatorCd: String = "",
     dataSetId: String = "",
     executingUserId: String = "",
-    resendDueToFailureInd: Boolean,
+    resendDueToFailureInd: Boolean = false,
     branchKey: String = "",
     cardKey: String = "",
     employeeKey: String = "",
-    partyKey: String,
+    partyKey: String = "",
     sessionKey: String = "",
     userId: String = "",
-    transactionLocalDateTime: String,
-    transactionNormalizedDateTime: String,
+    transactionLocalDateTime: String = "",
+    transactionNormalizedDateTime: String = "",
     transferApprovingUserId: String = "",
     transactionSendingSystemCd: String = "",
-    sourceCd: String,
+    sourceCd: String = "",
     tenantId: String = "",
     productBrand: String = "",
     executingTerminalId: String = "",
-    channel: String,
+    channel: String = "",
     transactionSECCode: String = ""
 ) {
   def toJObj(): JObject = {
@@ -53,7 +53,7 @@ case class BaseTransactionAType(
 }
 
 case class BaseTransactionBType(
-    accountKey: String,
+    accountKey: String = "",
     overrideTypeCd: String = ""
 ) {
   def toJObj(): JObject = {
@@ -66,8 +66,8 @@ case class BaseTransactionBType(
 
 
 case class BaseTransactionCType(
-    transactionKey: String,
-    transactionType: String,
+    transactionKey: String = "",
+    transactionType: String = "",
     transactionOriginationSystemCd: String = ""
 ) {
   def toJObj(): JObject = {
@@ -100,8 +100,8 @@ case class MonetaryTransactionAType(
 
 
 case class MonetaryTransactionBType(
-    addendaRecordCount: Int,
-    fundsDirectionCd: Int,
+    addendaRecordCount: Int = 0,
+    fundsDirectionCd: Int = 0,
     isTruncated: Boolean = false,
     isTrxOnUs: Boolean = false,
     memo: String = "",
@@ -110,9 +110,9 @@ case class MonetaryTransactionBType(
     parentTransactionKey: String = "",
     payeeAccountKey: String = "",
     payeeAliasKey: String = "",
-    payeeDataAccountNumber: String,
-    payeePartyKey: String,
-    transactionId: String,
+    payeeDataAccountNumber: String = "",
+    payeePartyKey: String = "",
+    transactionId: String = "",
     instrumentNumber: String = "",
     instrumentTypeCd: String = "",
     instrumentDate: String = "",
@@ -166,9 +166,9 @@ case class AddressType(
 }
 
 case class AmountType(
-    originalCurrencyCd: String,
-    originalAmount: Double,
-    normalizedOriginalAmount: Double,
+    originalCurrencyCd: String = "",
+    originalAmount: Double = 0.0,
+    normalizedOriginalAmount: Double = 0.0,
     regionNormalizedOriginalAmount: Double = 0.0,
     accountAmount: Double = 0.0, 
     oppAccountAmount: Double = 0.0
@@ -188,7 +188,7 @@ case class AmountType(
 case class TrxAccountDataType(
     accountNumber: String = "",
     currencyCd: String = "",
-    currentBalance: Option[Double],
+    currentBalance: Option[Double] = None,
     overdraftBalance: Double = 0.0,
     uncollectedBalance: Double = 0.0,
     routingNumber: String = "",
@@ -223,7 +223,7 @@ case class TrxPartyDataType(
     name: String = "",
     lastName: String = "",
     paymentSchemePartyId: String = "",
-    addressData: AddressType
+    addressData: AddressType = AddressType()
 ) {
   def toJObj(): JObject = {
     JObject(
@@ -237,12 +237,12 @@ case class TrxPartyDataType(
 
 
 case class WirePayeeType(
-    bankToBankInfo: Option[String],
-    creditBankInfo: Option[String],
-    intermediaryBankRoutingNumber: Option[String],
-    intermediaryBankRoutingTypeCd: Option[String],
-    originatorToBeneficiaryInfo: Option[String],
-    wirePayeeAddress: Option[String]
+    bankToBankInfo: Option[String] = None,
+    creditBankInfo: Option[String] = None,
+    intermediaryBankRoutingNumber: Option[String] = None,
+    intermediaryBankRoutingTypeCd: Option[String] = None,
+    originatorToBeneficiaryInfo: Option[String] = None,
+    wirePayeeAddress: Option[String] = None
 ) {
   def toJObj(): JObject = {
     JObject(
@@ -337,10 +337,10 @@ case class PartyReferenceType(
     taxId: String = "",
     partyType: String = "",
     isOurEmployee: Boolean = false,
-    accountOwnershipReference: AccountOwnershipType,
-    addressData: AddressType,
-    contactReference: ContactReferenceType,
-    referenceUpdateDates: ReferenceUpdateDatesType
+    accountOwnershipReference: AccountOwnershipType = AccountOwnershipType(),
+    addressData: AddressType = AddressType(),
+    contactReference: ContactReferenceType = ContactReferenceType(),
+    referenceUpdateDates: ReferenceUpdateDatesType = ReferenceUpdateDatesType()
 ) {
   def toJObj(): JObject = {
     JObject(
@@ -485,4 +485,32 @@ class JsonBuilder {
     )
   }
 
+}
+
+object JsonBuilder {
+  def apply(): JsonBuilder = new JsonBuilder()
+                                .setAmount(AmountType(originalCurrencyCd = "USD",
+                                                      originalAmount= 100.00,
+                                                      normalizedOriginalAmount = 100.00,
+                                                      regionNormalizedOriginalAmount = 100.00,
+                                                      accountAmount = 0.0,
+                                                      oppAccountAmount = 0.0))
+                                .setBaseTransactionA(BaseTransactionAType())
+                                .setBaseTransactionB(BaseTransactionBType())
+                                .setBaseTransactionC(BaseTransactionCType())
+                                .setMonetaryTransactionB(MonetaryTransactionBType())
+                                .setPartyReference(PartyReferenceType())
+                                .setTitle("title")
+                                .setTransferTransaction(TransferTransactionType())
+                                .setTrxMonitoredAccountData(TrxAccountDataType())
+                                .setTrxPayeeAccountData(TrxAccountDataType())
+                                .setTrxPayeePartyData(TrxPartyDataType())
+                                .setWirePayee(WirePayeeType())
+  
+
+  def main(args: Array[String]): Unit = {
+    val json = JsonBuilder().build()
+    println(pretty(render(json)))
+  }
+                                
 }
