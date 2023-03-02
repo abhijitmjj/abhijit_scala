@@ -4,6 +4,7 @@ import org.json4s.jackson.JsonMethods._
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
+
 case class BaseTransactionAType(
     actionInitiatorCd: String = "",
     dataSetId: String = "",
@@ -280,6 +281,920 @@ case class AccountOwnershipType(
   }
 }
 
+case class ContactReferenceType(
+    email: String = "",
+    mobilePhone: String = "",
+    phone: String = "",
+    phone2: String = "",
+    phone3: String = ""
+) {
+  def toJObj(): JObject = {
+    JObject(
+      "email" -> JString(email),
+      "mobilePhone" -> JString(mobilePhone),
+      "phone" -> JString(phone),
+      "phone2" -> JString(phone2),
+      "phone3" -> JString(phone3)
+    )
+  }
+}
+
+case class PartyRelationReferenceType(
+    startDate: String = LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME),
+    partyRelationType: String = ""
+) {
+  def toJObj(): JObject = {
+    JObject(
+      "startDate" -> JString(startDate),
+      "partyRelationType" -> JString(partyRelationType)
+    )
+  }
+}
+
+
+case class AuthenticationType(
+    method1: String = "",
+    method1Detail1: String = ""
+) {
+  def toJObj(): JObject = {
+    JObject(
+      "method1" -> JString(method1),
+      "method1Detail1" -> JString(method1Detail1)
+    )
+  }
+}
+
+
+case class BranchReferenceType(
+    name: String = "",
+    routingNumber: String = "",
+    routingType: String = "",
+    addressData: AddressType = AddressType()
+) {
+  def toJObj(): JObject = {
+    JObject(
+      "name" -> JString(name),
+      "routingNumber" -> JString(routingNumber),
+      "routingType" -> JString(routingType),
+      "addressData" -> addressData.toJObj()
+    )
+  }
+}
+
+
+case class CalculatedOnlineDeviceIdentifiersType(
+    onlineDeviceId: String = "",
+    firstSeen: String = LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME),
+    lastEvent: String = LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME),
+    idConfidence: Double = 0.0
+) {
+  def toJObj(): JObject = {
+    JObject(
+      "onlineDeviceId" -> JString(onlineDeviceId),
+      "firstSeen" -> JString(firstSeen),
+      "lastEvent" -> JString(lastEvent),
+      "idConfidence" -> JDouble(idConfidence)
+    )
+  }
+}
+
+
+case class CardDeviceType(
+    acquiringInstitutionId: String = "",
+    addressData: AddressType = AddressType(),
+    branch: String = "",
+    cardAcceptorId: String = "",
+    isTerminalCardCaptureCapable: Boolean = false,
+    merchantCategoryCd: String = "",
+    nameLocation: String = "",
+    networkId: String = "",
+    onUsInd: Boolean = false,
+    ownerName: String = "",
+    panEntryCapability: String = "",
+    panEntryModeCd: String = "",
+    pinEntryCapability: String = "",
+    posTerminalAttendanceIndicatorCd: String = "",
+    terminalCapabilities: String = "",
+    terminalId: String = "",
+    terminalTypeCd: String = "",
+    transactionCategoryCd: String = ""
+) {
+  def toJObj(): JObject = {
+    JObject(
+      "acquiringInstitutionId" -> JString(acquiringInstitutionId),
+      "addressData" -> addressData.toJObj(),
+      "branch" -> JString(branch),
+      "cardAcceptorId" -> JString(cardAcceptorId),
+      "isTerminalCardCaptureCapable" -> JBool(isTerminalCardCaptureCapable),
+      "merchantCategoryCd" -> JString(merchantCategoryCd),
+      "nameLocation" -> JString(nameLocation),
+      "networkId" -> JString(networkId),
+      "onUsInd" -> JBool(onUsInd),
+      "ownerName" -> JString(ownerName),
+      "panEntryCapability" -> JString(panEntryCapability),
+      "panEntryModeCd" -> JString(panEntryModeCd),
+      "pinEntryCapability" -> JString(pinEntryCapability),
+      "posTerminalAttendanceIndicatorCd" -> JString(posTerminalAttendanceIndicatorCd),
+      "terminalCapabilities" -> JString(terminalCapabilities),
+      "terminalId" -> JString(terminalId),
+      "terminalTypeCd" -> JString(terminalTypeCd),
+      "transactionCategoryCd" -> JString(transactionCategoryCd)
+    )
+  }
+}
+
+
+case class CustomDataType(
+    cs1: String = "",
+    cs2: String = "",
+    cs3: String = "",
+    cs4: String = "",
+    cs5: String = "",
+    cs6: String = "",
+    cs7: String = "",
+    cs8: String = "",
+    cb1: Boolean = false,
+    cb2: Boolean = false,
+    cb3: Boolean = false,
+    cb4: Boolean = false,
+    cb5: Boolean = false,
+    cb6: Boolean = false,
+    cn1: Double = 0.0,
+    cn2: Double = 0.0,
+    cn3: Double = 0.0,
+    cn4: Double = 0.0,
+    cn5: Double = 0.0,
+    cn6: Double = 0.0,
+    cn7: Double = 0.0,
+    cn8: Double = 0.0,
+    cn9: Double = 0.0,
+    cn10: Double = 0.0
+) {
+  def toJObj(): JObject = {
+    JObject(
+      "cs1" -> JString(cs1),
+      "cs2" -> JString(cs2),
+      "cs3" -> JString(cs3),
+      "cs4" -> JString(cs4),
+      "cs5" -> JString(cs5),
+      "cs6" -> JString(cs6),
+      "cs7" -> JString(cs7),
+      "cs8" -> JString(cs8),
+      "cb1" -> JBool(cb1),
+      "cb2" -> JBool(cb2),
+      "cb3" -> JBool(cb3),
+      "cb4" -> JBool(cb4),
+      "cb5" -> JBool(cb5),
+      "cb6" -> JBool(cb6),
+      "cn1" -> JDouble(cn1),
+      "cn2" -> JDouble(cn2),
+      "cn3" -> JDouble(cn3),
+      "cn4" -> JDouble(cn4),
+      "cn5" -> JDouble(cn5),
+      "cn6" -> JDouble(cn6),
+      "cn7" -> JDouble(cn7),
+      "cn8" -> JDouble(cn8),
+      "cn9" -> JDouble(cn9),
+      "cn10" -> JDouble(cn10)
+    )
+  }
+}
+
+
+case class DepositMetadataType(
+    creditItemCount: Int = 0,
+    netNormalizedAmount: Double = 0.0,
+    totalCreditCashNormalizedAmount: Double = 0.0,
+    totalCreditItemNormalizedAmount: Double = 0.0,
+    totalDebitCashNormalizedAmount: Double = 0.0
+) {
+  def toJObj(): JObject = {
+    JObject(
+      "creditItemCount" -> JInt(creditItemCount),
+      "netNormalizedAmount" -> JDouble(netNormalizedAmount),
+      "totalCreditCashNormalizedAmount" -> JDouble(totalCreditCashNormalizedAmount),
+      "totalCreditItemNormalizedAmount" -> JDouble(totalCreditItemNormalizedAmount),
+      "totalDebitCashNormalizedAmount" -> JDouble(totalDebitCashNormalizedAmount)
+    )
+  }
+}
+
+case class AccountReferenceType(
+    openDate: String = LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME),
+    overdraftLimit: Double = 0.0,
+    reopenDate: String = LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME),
+    status: String = "",
+    holdingBranchKey: String = "",
+    accountName: String = "",
+    openingBranchKey: String = "",
+    primaryPartyKey: String = "",
+    accountType: String = "",
+    numberOfRelatedParties: Int = 0,
+    openingChannelCd: String = "",
+    isPositivePay: Boolean = false,
+    isEmployeeOwned: Boolean = false,
+    addressData: AddressType = AddressType(),
+    contactReference: ContactReferenceType = ContactReferenceType(),
+    partyRelationReference: PartyRelationReferenceType = PartyRelationReferenceType(),
+    referenceUpdateDates: ReferenceUpdateDatesType = ReferenceUpdateDatesType()
+) {
+  def toJObj(): JObject = {
+    JObject(
+      "openDate" -> JString(openDate),
+      "overdraftLimit" -> JDouble(overdraftLimit),
+      "reopenDate" -> JString(reopenDate),
+      "status" -> JString(status),
+      "holdingBranchKey" -> JString(holdingBranchKey),
+      "accountName" -> JString(accountName),
+      "openingBranchKey" -> JString(openingBranchKey),
+      "primaryPartyKey" -> JString(primaryPartyKey),
+      "accountType" -> JString(accountType),
+      "numberOfRelatedParties" -> JInt(numberOfRelatedParties),
+      "openingChannelCd" -> JString(openingChannelCd),
+      "isPositivePay" -> JBool(isPositivePay),
+      "isEmployeeOwned" -> JBool(isEmployeeOwned),
+      "addressData" -> addressData.toJObj(),
+      "contactReference" -> contactReference.toJObj(),
+      "partyRelationReference" -> partyRelationReference.toJObj(),
+      "referenceUpdateDates" -> referenceUpdateDates.toJObj()
+    )
+  }
+}
+
+
+
+class EmployeeReferenceType(
+    positionCd: String = "",
+    typeCd: String = ""
+) {
+  def toJObj(): JObject = {
+    JObject(
+      "positionCd" -> JString(positionCd),
+      "typeCd" -> JString(typeCd)
+    )
+  }
+}
+
+
+
+case class ManagedPayeeType(
+    businessCategory: String = "",
+    isManaged: Boolean = false,
+    referenceNumber: String = ""
+) {
+  def toJObj(): JObject = {
+    JObject(
+      "businessCategory" -> JString(businessCategory),
+      "isManaged" -> JBool(isManaged),
+      "referenceNumber" -> JString(referenceNumber)
+    )
+  }
+}
+
+case class IdentificationType(
+    method1: String = "",
+    method1Detail1: String = ""
+) {
+  def toJObj(): JObject = {
+    JObject(
+      "method1" -> JString(method1),
+      "method1Detail1" -> JString(method1Detail1)
+    )
+  }
+}
+
+
+
+case class OnlineDeviceIdentifiersType(
+    onlineDeviceId: String = "",
+    firstSeen: String = LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME),
+    lastEvent: String = LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME),
+    idConfidence: Double = 0.0,
+    lookupCount: Int = 0,
+    reportCount: Int = 0
+) {
+  def toJObj(): JObject = {
+    JObject(
+      "onlineDeviceId" -> JString(onlineDeviceId),
+      "firstSeen" -> JString(firstSeen),
+      "lastEvent" -> JString(lastEvent),
+      "idConfidence" -> JDouble(idConfidence),
+      "lookupCount" -> JInt(lookupCount),
+      "reportCount" -> JInt(reportCount)
+    )
+  }
+}
+
+
+case class HTTPHeaderType(
+    httpHeaderFields: String = ""
+) {
+  def toJObj(): JObject = {
+    JObject(
+      "httpHeaderFields" -> JString(httpHeaderFields)
+    )
+  }
+}
+
+case class OnlineSessionType(
+    headerUserAgent: String = "",
+    ipAddress: String = "",
+    loginName: String = "",
+    startDateTime: String = LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME),
+    secondFactorAuthInd: Boolean = false,
+    httpHeader: HTTPHeaderType = HTTPHeaderType()
+) {
+  def toJObj(): JObject = {
+    JObject(
+      "headerUserAgent" -> JString(headerUserAgent),
+      "ipAddress" -> JString(ipAddress),
+      "loginName" -> JString(loginName),
+      "startDateTime" -> JString(startDateTime),
+      "secondFactorAuthInd" -> JBool(secondFactorAuthInd),
+      "httpHeader" -> httpHeader.toJObj()
+    )
+  }
+}
+
+
+case class PhoneSessionType(
+    deviceSourceNumber: String = "",
+    authenticationChannel: String = "",
+    authenticationMethod: String = "",
+    sessionDateTime: String = LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME),
+    duration: Double = 0.0,
+    isInitiatedByCustomer: Boolean = false
+) {
+  def toJObj(): JObject = {
+    JObject(
+      "deviceSourceNumber" -> JString(deviceSourceNumber),
+      "authenticationChannel" -> JString(authenticationChannel),
+      "authenticationMethod" -> JString(authenticationMethod),
+      "sessionDateTime" -> JString(sessionDateTime),
+      "duration" -> JDouble(duration),
+      "isInitiatedByCustomer" -> JBool(isInitiatedByCustomer)
+    )
+  }
+}
+
+
+
+case class RejectDataType(
+    dataCompletenessLevel: String = "",
+    rejectedDate: String = LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME),
+    rejectedTransactionInd: Boolean = false,
+    rejectedTypeCd: String = ""
+) {
+  def toJObj(): JObject = {
+    JObject(
+      "dataCompletenessLevel" -> JString(dataCompletenessLevel),
+      "rejectedDate" -> JString(rejectedDate),
+      "rejectedTransactionInd" -> JBool(rejectedTransactionInd),
+      "rejectedTypeCd" -> JString(rejectedTypeCd)
+    )
+  }
+}
+
+
+case class TrxCashLetterMetadataType(
+    cashLetterBankOfFirstDepositItemSequenceNumber: String = "",
+    cashLetterBundleID: String = "",
+    cashLetterCreationDatetime: String = LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME),
+    cashLetterECEInstitutionItemSequenceNumber: String = "",
+    cashLetterECEInstitutionRoutingNumber: String = "",
+    cashLetterID: String = "",
+    cashLetterMicrCorrectionIndicatorCode: String = "",
+    cashLetterMicrValidIndicatorCode: String = ""
+) {
+  def toJObj(): JObject = {
+    JObject(
+      "cashLetterBankOfFirstDepositItemSequenceNumber" -> JString(cashLetterBankOfFirstDepositItemSequenceNumber),
+      "cashLetterBundleID" -> JString(cashLetterBundleID),
+      "cashLetterCreationDatetime" -> JString(cashLetterCreationDatetime),
+      "cashLetterECEInstitutionItemSequenceNumber" -> JString(cashLetterECEInstitutionItemSequenceNumber),
+      "cashLetterECEInstitutionRoutingNumber" -> JString(cashLetterECEInstitutionRoutingNumber),
+      "cashLetterID" -> JString(cashLetterID),
+      "cashLetterMicrCorrectionIndicatorCode" -> JString(cashLetterMicrCorrectionIndicatorCode),
+      "cashLetterMicrValidIndicatorCode" -> JString(cashLetterMicrValidIndicatorCode)
+    )
+  }
+}
+
+
+case class TrxMICRDataType(
+    accountNumber: String = "",
+    accountNumberCheckDigit: String = "",
+    instrumentNumber: String = "",
+    routingNumber: String = "",
+    routingNumberCheckDigit: String = "",
+    micrAuxiliaryOnUs: String = "",
+    micrExternalProcessingCode: Boolean = false,
+    instrumentAmount: String = ""
+) {
+  def toJObj(): JObject = {
+    JObject(
+      "accountNumber" -> JString(accountNumber),
+      "accountNumberCheckDigit" -> JString(accountNumberCheckDigit),
+      "instrumentNumber" -> JString(instrumentNumber),
+      "routingNumber" -> JString(routingNumber),
+      "routingNumberCheckDigit" -> JString(routingNumberCheckDigit),
+      "micrAuxiliaryOnUs" -> JString(micrAuxiliaryOnUs),
+      "micrExternalProcessingCode" -> JBool(micrExternalProcessingCode),
+      "instrumentAmount" -> JString(instrumentAmount)
+    )
+  }
+}
+
+
+
+
+case class MobileDeviceType(
+    mobileDeviceData: String = "",
+    cellId: String = "",
+    imei: String = "",
+    imsi: String = "",
+    deviceName: String = "",
+    isRootedJailbroken: Boolean = false,
+    gpsCoordinates: String = "",
+    timeZone: String = "",
+    deviceBrand: String = "",
+    osVersion: String = "",
+    phoneNumber: String = "",
+    deviceModel: String = "",
+    os: String = "",
+    screenResolution: String = "",
+    appVersion: String = "",
+    malwareList: String = "",
+    malwareReasonCode: String = "",
+    connectionTypeCode: String = "",
+    rootedJailbrokenReasonCode: String = "",
+    cellTowerCoordinates: String = "",
+    simISOCountryCode: String = "",
+    ituMobileCountryCode: Int = 0,
+    ituMobileNetworkCode: Int = 0,
+    networkName: String = "",
+    androidId: String = "",
+    appleIdentifierForVendor: String = "",
+    appleAdvertisingId: String = "",
+    installedAppList: String = ""
+) {
+  def toJObj(): JObject = {
+    JObject(
+      "mobileDeviceData" -> JString(mobileDeviceData),
+      "cellId" -> JString(cellId),
+      "imei" -> JString(imei),
+      "imsi" -> JString(imsi),
+      "deviceName" -> JString(deviceName),
+      "isRootedJailbroken" -> JBool(isRootedJailbroken),
+      "gpsCoordinates" -> JString(gpsCoordinates),
+      "timeZone" -> JString(timeZone),
+      "deviceBrand" -> JString(deviceBrand),
+      "osVersion" -> JString(osVersion),
+      "phoneNumber" -> JString(phoneNumber),
+      "deviceModel" -> JString(deviceModel),
+      "os" -> JString(os),
+      "screenResolution" -> JString(screenResolution),
+      "appVersion" -> JString(appVersion),
+      "malwareList" -> JString(malwareList),
+      "malwareReasonCode" -> JString(malwareReasonCode),
+      "connectionTypeCode" -> JString(connectionTypeCode),
+      "rootedJailbrokenReasonCode" -> JString(rootedJailbrokenReasonCode),
+      "cellTowerCoordinates" -> JString(cellTowerCoordinates),
+      "simISOCountryCode" -> JString(simISOCountryCode),
+      "ituMobileCountryCode" -> JInt(ituMobileCountryCode),
+      "ituMobileNetworkCode" -> JInt(ituMobileNetworkCode),
+      "networkName" -> JString(networkName),
+      "androidId" -> JString(androidId),
+      "appleIdentifierForVendor" -> JString(appleIdentifierForVendor),
+      "appleAdvertisingId" -> JString(appleAdvertisingId),
+      "installedAppList" -> JString(installedAppList)
+    )
+  }
+}
+
+
+case class TrxReturnDataType(
+    endorsementDate: String = LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME),
+    isReturnRedepositEligible: Boolean = false,
+    originalTrxId: String = "",
+    returnCount: Int = 0,
+    returnReasonCdStandardCd: String = "",
+    returnReasonCode: String = "",
+    returnReasonRemarks: String = ""
+) {
+  def toJObj(): JObject = {
+    JObject(
+      "endorsementDate" -> JString(endorsementDate),
+      "isReturnRedepositEligible" -> JBool(isReturnRedepositEligible),
+      "originalTrxId" -> JString(originalTrxId),
+      "returnCount" -> JInt(returnCount),
+      "returnReasonCdStandardCd" -> JString(returnReasonCdStandardCd),
+      "returnReasonCode" -> JString(returnReasonCode),
+      "returnReasonRemarks" -> JString(returnReasonRemarks)
+    )
+  }
+}
+
+
+
+case class UserReferenceType(
+    birthDate: String = LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME),
+    name: String = "",
+    onlineServiceJoinDate: String = LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME),
+    addressData: AddressType = AddressType(),
+    contactReference: ContactReferenceType = ContactReferenceType(),
+    referenceUpdateDates: ReferenceUpdateDatesType = ReferenceUpdateDatesType()
+) {
+  def toJObj(): JObject = {
+    JObject(
+      "birthDate" -> JString(birthDate),
+      "name" -> JString(name),
+      "onlineServiceJoinDate" -> JString(onlineServiceJoinDate),
+      "addressData" -> addressData.toJObj(),
+      "contactReference" -> contactReference.toJObj(),
+      "referenceUpdateDates" -> referenceUpdateDates.toJObj()
+    )
+  }
+}
+
+
+case class VersionDataType(
+    transactionActionCd: String = "",
+    transactionStatusCd: String = "",
+    transactionVersionDescription: String = ""
+) {
+  def toJObj(): JObject = {
+    JObject(
+      "transactionActionCd" -> JString(transactionActionCd),
+      "transactionStatusCd" -> JString(transactionStatusCd),
+      "transactionVersionDescription" -> JString(transactionVersionDescription)
+    )
+  }
+}
+
+
+case class TrxServicesChangeDataType(
+    defaultUDMUpdateInd: Boolean = false,
+    entityStaticData: String = "",
+    newValue: String = "",
+    oldValue: String = ""
+) {
+  def toJObj(): JObject = {
+    JObject(
+      "defaultUDMUpdateInd" -> JBool(defaultUDMUpdateInd),
+      "entityStaticData" -> JString(entityStaticData),
+      "newValue" -> JString(newValue),
+      "oldValue" -> JString(oldValue)
+    )
+  }
+}
+
+
+
+
+case class WebDeviceType(
+    webDeviceData: String = "",
+    dataCollectionResponseCd: String = "",
+    webSessionBrowserTimeZone: String = "",
+    webSessionClientScreenResolution: String = "",
+    javascriptOperatingSystem: String = "",
+    deviceType: Boolean = false,
+    javascriptFonts: String = "",
+    javascriptUserAgentString: String = "",
+    flashEnabled: Boolean = false,
+    flashDetected: Boolean = false,
+    javascriptEnabled: Boolean = false,
+    cookiesEnabled: Boolean = false,
+    browserAcceptLanguage: String = "",
+    plugins: String = "",
+    systemLocale: String = "",
+    adaptorResponseCode: String = "",
+    javaScriptEngine: String = "",
+    localDatetime: String = LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME),
+    normalizedDateTime: String = LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME),
+    userAgentOperatingSystem: String = "",
+    userAgentWebBrowser: String = "",
+    userAgentFamily: Int = 0,
+    userAgentPlatform: Int = 0,
+    userAgentBrowserEngine: String = "",
+    userLocale: String = "",
+    nonce: String = ""
+) {
+  def toJObj(): JObject = {
+    JObject(
+      "webDeviceData" -> JString(webDeviceData),
+      "dataCollectionResponseCd" -> JString(dataCollectionResponseCd),
+      "webSessionBrowserTimeZone" -> JString(webSessionBrowserTimeZone),
+      "webSessionClientScreenResolution" -> JString(webSessionClientScreenResolution),
+      "javascriptOperatingSystem" -> JString(javascriptOperatingSystem),
+      "deviceType" -> JBool(deviceType),
+      "javascriptFonts" -> JString(javascriptFonts),
+      "javascriptUserAgentString" -> JString(javascriptUserAgentString),
+      "flashEnabled" -> JBool(flashEnabled),
+      "flashDetected" -> JBool(flashDetected),
+      "javascriptEnabled" -> JBool(javascriptEnabled),
+      "cookiesEnabled" -> JBool(cookiesEnabled),
+      "browserAcceptLanguage" -> JString(browserAcceptLanguage),
+      "plugins" -> JString(plugins),
+      "systemLocale" -> JString(systemLocale),
+      "adaptorResponseCode" -> JString(adaptorResponseCode),
+      "javaScriptEngine" -> JString(javaScriptEngine),
+      "localDatetime" -> JString(localDatetime),
+      "normalizedDateTime" -> JString(normalizedDateTime),
+      "userAgentOperatingSystem" -> JString(userAgentOperatingSystem),
+      "userAgentWebBrowser" -> JString(userAgentWebBrowser),
+      "userAgentFamily" -> JInt(userAgentFamily),
+      "userAgentPlatform" -> JInt(userAgentPlatform),
+      "userAgentBrowserEngine" -> JString(userAgentBrowserEngine),
+      "userLocale" -> JString(userLocale),
+      "nonce" -> JString(nonce)
+    )
+  }
+}
+
+case class UserDefinedComplexTypes(
+    dataOfUserDefinedType: String = ""
+) {
+  def toJObj(): JObject = {
+    JObject(
+      "dataOfUserDefinedType" -> JString(dataOfUserDefinedType)
+    )
+  }
+}
+
+
+case class ContactDetailsType(
+    addressData1: AddressType = AddressType(),
+    addressData2: AddressType = AddressType(),
+    addressData3: AddressType = AddressType(),
+    email1: String = "",
+    email2: String = "",
+    email3: String = "",
+    phone1: String = "",
+    phone2: String = "",
+    phone3: String = ""
+) {
+  def toJObj(): JObject = {
+    JObject(
+      "addressData1" -> addressData1.toJObj(),
+      "addressData2" -> addressData2.toJObj(),
+      "addressData3" -> addressData3.toJObj(),
+      "email1" -> JString(email1),
+      "email2" -> JString(email2),
+      "email3" -> JString(email3),
+      "phone1" -> JString(phone1),
+      "phone2" -> JString(phone2),
+      "phone3" -> JString(phone3)
+    )
+  }
+}
+
+
+case class EnrollmentTransactionType(
+    authenticationMethod1: String = "",
+    authenticationMethod1Detail1: String = "",
+    authenticationMethod1Detail2: String = "",
+    authenticationMethod1Detail3: String = "",
+    authenticationMethod2: String = "",
+    authenticationMethod2Detail1: String = "",
+    authenticationMethod2Detail2: String = "",
+    authenticationMethod2Detail3: String = "",
+    contactDetails: ContactDetailsType = ContactDetailsType(),
+    identificationMethod1: String = "",
+    identificationMethod1Detail1: String = "",
+    identificationMethod1Detail2: String = "",
+    identificationMethod1Detail3: String = "",
+    identificationMethod2: String = "",
+    identificationMethod2Detail1: String = "",
+    identificationMethod2Detail2: String = "",
+    identificationMethod2Detail3: String = "",
+    serviceDate: String = LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME)
+) {
+  def toJObj(): JObject = {
+    JObject(
+      "authenticationMethod1" -> JString(authenticationMethod1),
+      "authenticationMethod1Detail1" -> JString(authenticationMethod1Detail1),
+      "authenticationMethod1Detail2" -> JString(authenticationMethod1Detail2),
+      "authenticationMethod1Detail3" -> JString(authenticationMethod1Detail3),
+      "authenticationMethod2" -> JString(authenticationMethod2),
+      "authenticationMethod2Detail1" -> JString(authenticationMethod2Detail1),
+      "authenticationMethod2Detail2" -> JString(authenticationMethod2Detail2),
+      "authenticationMethod2Detail3" -> JString(authenticationMethod2Detail3),
+      "contactDetails" -> contactDetails.toJObj(),
+      "identificationMethod1" -> JString(identificationMethod1),
+      "identificationMethod1Detail1" -> JString(identificationMethod1Detail1),
+      "identificationMethod1Detail2" -> JString(identificationMethod1Detail2),
+      "identificationMethod1Detail3" -> JString(identificationMethod1Detail3),
+      "identificationMethod2" -> JString(identificationMethod2),
+      "identificationMethod2Detail1" -> JString(identificationMethod2Detail1),
+      "identificationMethod2Detail2" -> JString(identificationMethod2Detail2),
+      "identificationMethod2Detail3" -> JString(identificationMethod2Detail3),
+      "serviceDate" -> JString(serviceDate)
+    )
+  }
+}
+
+
+case class ServicesTransactionType(
+    isRelationTypePrimary: Boolean = false,
+    entityTypeCd: Int = 0,
+    reasonCd: String = "",
+    relationTypeCd: String = "",
+    transactionTypeCd: String = ""
+) {
+  def toJObj(): JObject = {
+    JObject(
+      "isRelationTypePrimary" -> JBool(isRelationTypePrimary),
+      "entityTypeCd" -> JInt(entityTypeCd),
+      "reasonCd" -> JString(reasonCd),
+      "relationTypeCd" -> JString(relationTypeCd),
+      "transactionTypeCd" -> JString(transactionTypeCd)
+    )
+  }
+}
+
+
+case class OpenBankingDataType(
+    apiVersion: String = "",
+    invokingSystemID: String = ""
+) {
+  def toJObj(): JObject = {
+    JObject(
+      "apiVersion" -> JString(apiVersion),
+      "invokingSystemID" -> JString(invokingSystemID)
+    )
+  }
+}
+
+
+case class P2PPayeeDataType(
+    alias: String = "",
+    aliasType: Int = 0
+) {
+  def toJObj(): JObject = {
+    JObject(
+      "alias" -> JString(alias),
+      "aliasType" -> JInt(aliasType)
+    )
+  }
+}
+
+
+case class P2PPayorDataType(
+    alias: String = "",
+    aliasType: Int = 0
+) {
+  def toJObj(): JObject = {
+    JObject(
+      "alias" -> JString(alias),
+      "aliasType" -> JInt(aliasType)
+    )
+  }
+}
+
+case class ExternalSystemScoreDataType(
+    externalSystem1Score: Double = 0.0,
+    externalSystem1ReasonCode: String = "",
+    isLowExternalSystem1ScoreMostRisky: Boolean = false,
+    externalSystem2Score: Double = 0.0,
+    externalSystem2ReasonCode: String = "",
+    isLowExternalSystem2ScoreMostRisky: Boolean = false,
+    externalSystem3Score: Double = 0.0,
+    externalSystem3ReasonCode: String = "",
+    isLowExternalSystem3ScoreMostRisky: Boolean = false
+) {
+  def toJObj(): JObject = {
+    JObject(
+      "externalSystem1Score" -> JDouble(externalSystem1Score),
+      "externalSystem1ReasonCode" -> JString(externalSystem1ReasonCode),
+      "isLowExternalSystem1ScoreMostRisky" -> JBool(isLowExternalSystem1ScoreMostRisky),
+      "externalSystem2Score" -> JDouble(externalSystem2Score),
+      "externalSystem2ReasonCode" -> JString(externalSystem2ReasonCode),
+      "isLowExternalSystem2ScoreMostRisky" -> JBool(isLowExternalSystem2ScoreMostRisky),
+      "externalSystem3Score" -> JDouble(externalSystem3Score),
+      "externalSystem3ReasonCode" -> JString(externalSystem3ReasonCode),
+      "isLowExternalSystem3ScoreMostRisky" -> JBool(isLowExternalSystem3ScoreMostRisky)
+    )
+  }
+}
+
+case class CardReferenceDataType(
+    activationDate: String = LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME),
+    atmLimit: Double = 0.0,
+    authenticationCapability: String = "",
+    bin: String = "",
+    changeDate: String = LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME),
+    expirationDate: String = LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME),
+    iccInd: Boolean = false,
+    issuedDate: String = LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME),
+    panForDisplay: String = "",
+    posLimit: Double = 0.0,
+    type_of: String = "",
+    isContactChipCard: Boolean = false,
+    isContactlessChipCard: Boolean = false,
+    isEMVCard: Boolean = false,
+    panCountryCd: String = "",
+    status: String = ""
+) {
+  def toJObj(): JObject = {
+    JObject(
+      "activationDate" -> JString(activationDate),
+      "atmLimit" -> JDouble(atmLimit),
+      "authenticationCapability" -> JString(authenticationCapability),
+      "bin" -> JString(bin),
+      "changeDate" -> JString(changeDate),
+      "expirationDate" -> JString(expirationDate),
+      "iccInd" -> JBool(iccInd),
+      "issuedDate" -> JString(issuedDate),
+      "panForDisplay" -> JString(panForDisplay),
+      "posLimit" -> JDouble(posLimit),
+      "type" -> JString(type_of),
+      "isContactChipCard" -> JBool(isContactChipCard),
+      "isContactlessChipCard" -> JBool(isContactlessChipCard),
+      "isEMVCard" -> JBool(isEMVCard),
+      "panCountryCd" -> JString(panCountryCd),
+      "status" -> JString(status)
+    )
+  }
+}
+
+case class PosTransactionDataType(
+  avsResponseCd: String = "",
+  cardholderPresenceIndicatorCd: String = "",
+  cardPresenceInd: Boolean = false,
+  cashbackAmountAsEntered: Double = 0.0,
+  cashbackAmountInNormalizedCurrency: Double = 0.0,
+  cashbackInd: Boolean = false,
+  contactlessInd: Boolean = false,
+  electronicCommerceFlag: String = "",
+  secure3DResponseCd: String = ""
+) {
+  def toJObj(): JObject = {
+    JObject(
+      "avsResponseCd" -> JString(avsResponseCd),
+      "cardholderPresenceIndicatorCd" -> JString(cardholderPresenceIndicatorCd),
+      "cardPresenceInd" -> JBool(cardPresenceInd),
+      "cashbackAmountAsEntered" -> JDouble(cashbackAmountAsEntered),
+      "cashbackAmountInNormalizedCurrency" -> JDouble(cashbackAmountInNormalizedCurrency),
+      "cashbackInd" -> JBool(cashbackInd),
+      "contactlessInd" -> JBool(contactlessInd),
+      "electronicCommerceFlag" -> JString(electronicCommerceFlag),
+      "secure3DResponseCd" -> JString(secure3DResponseCd)
+    )
+  } 
+}
+
+
+case class RemittanceInformationDataType(
+    remittanceInfo: String = ""
+  ) {
+    def toJObj(): JObject = {
+        JObject(
+            "remittanceInfo" -> JString(remittanceInfo)
+        )
+    }
+}
+
+case class CardTransactionDataType(
+    authenticationMethodUsed: String = "",
+    authorizationDecisionCd: String = "",
+    authorizationResponseCd: String = "",
+    feeAmtInNomalizedCurrency: Double = 0.0,
+    verificationCd: String = "",
+    verificationCdPresence: String = "",
+    verificationTypeCd: String = "",
+    feeAmountInOriginalCurrency: Double = 0.0,
+    feeAmountInRegionNormalizedCurrency: Double = 0.0,
+    memberId: String = "",
+    messagePurpose: String = "",
+    messageType: String = "",
+    recurringPaymentIndicator: Int = 0,
+    track_1_2_Indicator: String = "",
+    track1Name: String = "",
+    validatedEMVTransactionCd: String = ""
+) {
+  def toJObj(): JObject = {
+    JObject(
+      "authenticationMethodUsed" -> JString(authenticationMethodUsed),
+      "authorizationDecisionCd" -> JString(authorizationDecisionCd),
+      "authorizationResponseCd" -> JString(authorizationResponseCd),
+      "feeAmtInNomalizedCurrency" -> JDouble(feeAmtInNomalizedCurrency),
+      "verificationCd" -> JString(verificationCd),
+      "verificationCdPresence" -> JString(verificationCdPresence),
+      "verificationTypeCd" -> JString(verificationTypeCd),
+      "feeAmountInOriginalCurrency" -> JDouble(feeAmountInOriginalCurrency),
+      "feeAmountInRegionNormalizedCurrency" -> JDouble(feeAmountInRegionNormalizedCurrency),
+      "memberId" -> JString(memberId),
+      "messagePurpose" -> JString(messagePurpose),
+      "messageType" -> JString(messageType),
+      "recurringPaymentIndicator" -> JInt(recurringPaymentIndicator),
+      "track_1_2_Indicator" -> JString(track_1_2_Indicator),
+      "track1Name" -> JString(track1Name),
+      "validatedEMVTransactionCd" -> JString(validatedEMVTransactionCd)
+    )
+  }
+}
+
 case class ReferenceUpdateDatesType(
     addressUpdateDate: String = LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME),
     emailUpdateDate: String = LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME),
@@ -309,23 +1224,6 @@ case class ReferenceUpdateDatesType(
 }
 
 
-case class ContactReferenceType(
-    email: String = "",
-    mobilePhone: String = "",
-    phone: String = "",
-    phone2: String = "",
-    phone3: String = ""
-) {
-  def toJObj(): JObject = {
-    JObject(
-      "email" -> JString(email),
-      "mobilePhone" -> JString(mobilePhone),
-      "phone" -> JString(phone),
-      "phone2" -> JString(phone2),
-      "phone3" -> JString(phone3)
-    )
-  }
-}
 
 
 case class PartyReferenceType(

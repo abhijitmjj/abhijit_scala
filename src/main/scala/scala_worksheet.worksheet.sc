@@ -77,3 +77,34 @@ def generateDateTime: String = {
   f"$year%04d-$month%02d-$day%02dT$hour%02d:$minute%02d:$second%02d.$millisecond%03dZ"
 }
 generateDateTime
+case class BaseTransactionBType(
+    accountKey: String = "",
+    overrideTypeCd: String = ""
+) {
+  def toJObj(): JObject = {
+    JObject(
+      "accountKey" -> JString(accountKey),
+      "overrideTypeCd" -> JString(overrideTypeCd)
+    )
+  }
+}
+val baseTransactionBType = BaseTransactionBType("123456789", "123456789")
+baseTransactionBType.toJObj()
+compact(render(baseTransactionBType.toJObj()))
+val fields = BaseTransactionBType.getClass.getDeclaredFields
+import org.json4s._
+import org.json4s.native.Serialization.write
+implicit val formats: Formats = DefaultFormats
+Extraction.decompose(BaseTransactionBType("123456789", "123456789"))(DefaultFormats)
+write(BaseTransactionBType("123456789", "123456789"))
+import org.json4s._
+import org.json4s.native.Serialization.write
+
+trait Jsonable {
+  def toJson(): JValue = Extraction.decompose(this)(DefaultFormats)
+  def toJObj(): JObject = JObject(Extraction.decompose(this)(DefaultFormats).asInstanceOf[JObject].obj)
+
+  def toJString(): String = write(this)(DefaultFormats)
+}
+
+
