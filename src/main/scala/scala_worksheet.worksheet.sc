@@ -106,5 +106,5 @@ trait Jsonable {
 
   def toJString(): String = write(this)(DefaultFormats)
 }
-
+None.map(x => x).getOrElse(JNothing)
 

@@ -5,6 +5,16 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 
+import org.json4s.native.Serialization.write
+import org.json4s.jackson.Json
+
+trait Jsonable {
+  def toJson(): JValue = Extraction.decompose(this)(DefaultFormats)
+  def toJObj(): JObject = JObject(Extraction.decompose(this)(DefaultFormats).asInstanceOf[JObject].obj)
+
+  def toJString(): String = write(this)(DefaultFormats)
+}
+
 case class BaseTransactionAType(
     actionInitiatorCd: String = "",
     dataSetId: String = "",
@@ -26,8 +36,8 @@ case class BaseTransactionAType(
     executingTerminalId: String = "",
     channel: String = "",
     transactionSECCode: String = ""
-) {
-  def toJObj(): JObject = {
+) extends Jsonable {
+  override def toJObj(): JObject = {
     JObject(
       "actionInitiatorCd" -> JString(actionInitiatorCd),
       "dataSetId" -> JString(dataSetId),
@@ -51,34 +61,21 @@ case class BaseTransactionAType(
       "transactionSECCode" -> JString(transactionSECCode)
     )
   }
+  override def toJson(): JValue = this.toJObj().asInstanceOf[JValue]
+  override def toJString(): String = compact(render(this.toJObj()))
 }
 
 case class BaseTransactionBType(
     accountKey: String = "",
     overrideTypeCd: String = ""
-) {
-  def toJObj(): JObject = {
-    JObject(
-      "accountKey" -> JString(accountKey),
-      "overrideTypeCd" -> JString(overrideTypeCd)
-    )
-  }
-}
+) extends Jsonable
 
 
 case class BaseTransactionCType(
     transactionKey: String = "",
     transactionType: String = "",
     transactionOriginationSystemCd: String = ""
-) {
-  def toJObj(): JObject = {
-    JObject(
-      "transactionKey" -> JString(transactionKey),
-      "transactionType" -> JString(transactionType),
-      "transactionOriginationSystemCd" -> JString(transactionOriginationSystemCd)
-    )
-  }
-}
+) extends Jsonable
 
 
 case class MonetaryTransactionAType(
@@ -87,17 +84,7 @@ case class MonetaryTransactionAType(
     logicalFileSequenceId: String = "",
     logicalInputFileCreationDateTime: String = "",
     logicalInputFileCreationNormalizedDateTime: String = ""
-) {
-  def toJObj(): JObject = {
-    JObject(
-      "batchId" -> JString(batchId),
-      "isOriginated" -> JBool(isOriginated),
-      "logicalFileSequenceId" -> JString(logicalFileSequenceId),
-      "logicalInputFileCreationDateTime" -> JString(logicalInputFileCreationDateTime),
-      "logicalInputFileCreationNormalizedDateTime" -> JString(logicalInputFileCreationNormalizedDateTime)
-    )
-  }
-}
+) extends Jsonable
 
 
 case class MonetaryTransactionBType(
@@ -118,29 +105,7 @@ case class MonetaryTransactionBType(
     instrumentTypeCd: String = "",
     instrumentDate: String = "",
     isRedeposit: Boolean = false
-) {
-  def toJObj(): JObject = {
-    JObject(
-      "addendaRecordCount" -> JInt(addendaRecordCount),
-      "fundsDirectionCd" -> JInt(fundsDirectionCd),
-      "isTruncated" -> JBool(isTruncated),
-      "isTrxOnUs" -> JBool(isTrxOnUs),
-      "memo" -> JString(memo),
-      "oppAccountKey" -> JString(oppAccountKey),
-      "oppPartyKey" -> JString(oppPartyKey),
-      "parentTransactionKey" -> JString(parentTransactionKey),
-      "payeeAccountKey" -> JString(payeeAccountKey),
-      "payeeAliasKey" -> JString(payeeAliasKey),
-      "payeeDataAccountNumber" -> JString(payeeDataAccountNumber),
-      "payeePartyKey" -> JString(payeePartyKey),
-      "transactionId" -> JString(transactionId),
-      "instrumentNumber" -> JString(instrumentNumber),
-      "instrumentTypeCd" -> JString(instrumentTypeCd),
-      "instrumentDate" -> JString(instrumentDate),
-      "isRedeposit" -> JBool(isRedeposit)
-    )
-  }
-}
+) extends Jsonable
 
 case class AddressType(
     addressLine1: String = "",
@@ -151,12 +116,12 @@ case class AddressType(
     POBox: String = "",
     state: String = "",
     zipPostcode: String = ""
-) {
-  def toJObj(): JObject = {
+) extends Jsonable{
+  override def toJObj(): JObject = {
     JObject(
-      "addressLine1" -> JString(addressLine1),
-      "addressLine2" -> JString(addressLine2),
-      "addressLine3" -> JString(addressLine3),
+      "addressLine1" -> JString(addressLine1.trim),
+      "addressLine2" -> JString(addressLine2.trim),
+      "addressLine3" -> JString(addressLine3.trim),
       "city" -> JString(city),
       "countryCd" -> JString(countryCd),
       "POBox" -> JString(POBox),
@@ -173,8 +138,8 @@ case class AmountType(
     regionNormalizedOriginalAmount: Double = 0.0,
     accountAmount: Double = 0.0, 
     oppAccountAmount: Double = 0.0
-) {
-  def toJObj(): JObject = {
+) extends Jsonable {
+  override def toJObj(): JObject = {
     JObject(
       "originalCurrencyCd" -> JString(originalCurrencyCd),
       "originalAmount" -> JDouble(originalAmount),
@@ -189,7 +154,7 @@ case class AmountType(
 case class TrxAccountDataType(
     accountNumber: String = "",
     currencyCd: String = "",
-    currentBalance: Option[Double] = None,
+    currentBalance: Double = 0.0,
     overdraftBalance: Double = 0.0,
     uncollectedBalance: Double = 0.0,
     routingNumber: String = "",
@@ -200,62 +165,24 @@ case class TrxAccountDataType(
     accountType: String = "",
     fiName: String = "",
     ledgerBalance: Double = 0.0
-) {
-  def toJObj(): JObject = {
-    JObject(
-      "accountNumber" -> JString(accountNumber),
-      "currencyCd" -> JString(currencyCd),
-      "currentBalance" -> JDouble(currentBalance.getOrElse(0.0)),
-      "overdraftBalance" -> JDouble(overdraftBalance),
-      "uncollectedBalance" -> JDouble(uncollectedBalance),
-      "routingNumber" -> JString(routingNumber),
-      "routingType" -> JString(routingType),
-      "availableBalance" -> JDouble(availableBalance),
-      "branchCountryCd" -> JString(branchCountryCd),
-      "accountName" -> JString(accountName),
-      "accountType" -> JString(accountType),
-      "fiName" -> JString(fiName),
-      "ledgerBalance" -> JDouble(ledgerBalance),
-    )
-  }
-}
+) extends Jsonable
 
 case class TrxPartyDataType(
     name: String = "",
     lastName: String = "",
     paymentSchemePartyId: String = "",
     addressData: AddressType = AddressType()
-) {
-  def toJObj(): JObject = {
-    JObject(
-      "name" -> JString(name),
-      "lastName" -> JString(lastName),
-      "paymentSchemePartyId" -> JString(paymentSchemePartyId),
-      "addressData" -> addressData.toJObj()
-    )
-  }
-}
+) extends Jsonable
 
 
 case class WirePayeeType(
-    bankToBankInfo: Option[String] = None,
-    creditBankInfo: Option[String] = None,
-    intermediaryBankRoutingNumber: Option[String] = None,
-    intermediaryBankRoutingTypeCd: Option[String] = None,
-    originatorToBeneficiaryInfo: Option[String] = None,
-    wirePayeeAddress: Option[String] = None
-) {
-  def toJObj(): JObject = {
-    JObject(
-      "bankToBankInfo" -> JString(bankToBankInfo.getOrElse("")),
-      "creditBankInfo" -> JString(creditBankInfo.getOrElse("")),
-      "intermediaryBankRoutingNumber" -> JString(intermediaryBankRoutingNumber.getOrElse("")),
-      "intermediaryBankRoutingTypeCd" -> JString(intermediaryBankRoutingTypeCd.getOrElse("")),
-      "originatorToBeneficiaryInfo" -> JString(originatorToBeneficiaryInfo.getOrElse("")),
-      "wirePayeeAddress" -> JString(wirePayeeAddress.getOrElse("")),
-    )
-  }
-}
+    bankToBankInfo: String = "",
+    creditBankInfo: String = "",
+    intermediaryBankRoutingNumber: String = "",
+    intermediaryBankRoutingTypeCd: String = "",
+    originatorToBeneficiaryInfo: String = "",
+    wirePayeeAddress: String = ""
+) extends Jsonable
 
 case class AccountOwnershipType(
     bankingInd: Boolean = false,
@@ -266,20 +193,7 @@ case class AccountOwnershipType(
     longSavingsInd: Boolean = false,
     mortgageInd: Boolean = false,
     savingsInd: Boolean = false
-) {
-  def toJObj(): JObject = {
-    JObject(
-      "bankingInd" -> JBool(bankingInd),
-      "creditCardInd" -> JBool(creditCardInd),
-      "insuranceInd" -> JBool(insuranceInd),
-      "investmentsInd" -> JBool(investmentsInd),
-      "loanInd" -> JBool(loanInd),
-      "longSavingsInd" -> JBool(longSavingsInd),
-      "mortgageInd" -> JBool(mortgageInd),
-      "savingsInd" -> JBool(savingsInd)
-    )
-  }
-}
+) extends Jsonable
 
 case class ContactReferenceType(
     email: String = "",
@@ -287,42 +201,18 @@ case class ContactReferenceType(
     phone: String = "",
     phone2: String = "",
     phone3: String = ""
-) {
-  def toJObj(): JObject = {
-    JObject(
-      "email" -> JString(email),
-      "mobilePhone" -> JString(mobilePhone),
-      "phone" -> JString(phone),
-      "phone2" -> JString(phone2),
-      "phone3" -> JString(phone3)
-    )
-  }
-}
+) extends Jsonable
 
 case class PartyRelationReferenceType(
     startDate: String = LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME),
     partyRelationType: String = ""
-) {
-  def toJObj(): JObject = {
-    JObject(
-      "startDate" -> JString(startDate),
-      "partyRelationType" -> JString(partyRelationType)
-    )
-  }
-}
+) extends Jsonable
 
 
 case class AuthenticationType(
     method1: String = "",
     method1Detail1: String = ""
-) {
-  def toJObj(): JObject = {
-    JObject(
-      "method1" -> JString(method1),
-      "method1Detail1" -> JString(method1Detail1)
-    )
-  }
-}
+) extends Jsonable
 
 
 case class BranchReferenceType(
@@ -330,16 +220,7 @@ case class BranchReferenceType(
     routingNumber: String = "",
     routingType: String = "",
     addressData: AddressType = AddressType()
-) {
-  def toJObj(): JObject = {
-    JObject(
-      "name" -> JString(name),
-      "routingNumber" -> JString(routingNumber),
-      "routingType" -> JString(routingType),
-      "addressData" -> addressData.toJObj()
-    )
-  }
-}
+) extends Jsonable
 
 
 case class CalculatedOnlineDeviceIdentifiersType(
@@ -347,16 +228,7 @@ case class CalculatedOnlineDeviceIdentifiersType(
     firstSeen: String = LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME),
     lastEvent: String = LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME),
     idConfidence: Double = 0.0
-) {
-  def toJObj(): JObject = {
-    JObject(
-      "onlineDeviceId" -> JString(onlineDeviceId),
-      "firstSeen" -> JString(firstSeen),
-      "lastEvent" -> JString(lastEvent),
-      "idConfidence" -> JDouble(idConfidence)
-    )
-  }
-}
+) extends Jsonable
 
 
 case class CardDeviceType(
@@ -378,30 +250,7 @@ case class CardDeviceType(
     terminalId: String = "",
     terminalTypeCd: String = "",
     transactionCategoryCd: String = ""
-) {
-  def toJObj(): JObject = {
-    JObject(
-      "acquiringInstitutionId" -> JString(acquiringInstitutionId),
-      "addressData" -> addressData.toJObj(),
-      "branch" -> JString(branch),
-      "cardAcceptorId" -> JString(cardAcceptorId),
-      "isTerminalCardCaptureCapable" -> JBool(isTerminalCardCaptureCapable),
-      "merchantCategoryCd" -> JString(merchantCategoryCd),
-      "nameLocation" -> JString(nameLocation),
-      "networkId" -> JString(networkId),
-      "onUsInd" -> JBool(onUsInd),
-      "ownerName" -> JString(ownerName),
-      "panEntryCapability" -> JString(panEntryCapability),
-      "panEntryModeCd" -> JString(panEntryModeCd),
-      "pinEntryCapability" -> JString(pinEntryCapability),
-      "posTerminalAttendanceIndicatorCd" -> JString(posTerminalAttendanceIndicatorCd),
-      "terminalCapabilities" -> JString(terminalCapabilities),
-      "terminalId" -> JString(terminalId),
-      "terminalTypeCd" -> JString(terminalTypeCd),
-      "transactionCategoryCd" -> JString(transactionCategoryCd)
-    )
-  }
-}
+) extends Jsonable
 
 
 case class CustomDataType(
@@ -429,36 +278,7 @@ case class CustomDataType(
     cn8: Double = 0.0,
     cn9: Double = 0.0,
     cn10: Double = 0.0
-) {
-  def toJObj(): JObject = {
-    JObject(
-      "cs1" -> JString(cs1),
-      "cs2" -> JString(cs2),
-      "cs3" -> JString(cs3),
-      "cs4" -> JString(cs4),
-      "cs5" -> JString(cs5),
-      "cs6" -> JString(cs6),
-      "cs7" -> JString(cs7),
-      "cs8" -> JString(cs8),
-      "cb1" -> JBool(cb1),
-      "cb2" -> JBool(cb2),
-      "cb3" -> JBool(cb3),
-      "cb4" -> JBool(cb4),
-      "cb5" -> JBool(cb5),
-      "cb6" -> JBool(cb6),
-      "cn1" -> JDouble(cn1),
-      "cn2" -> JDouble(cn2),
-      "cn3" -> JDouble(cn3),
-      "cn4" -> JDouble(cn4),
-      "cn5" -> JDouble(cn5),
-      "cn6" -> JDouble(cn6),
-      "cn7" -> JDouble(cn7),
-      "cn8" -> JDouble(cn8),
-      "cn9" -> JDouble(cn9),
-      "cn10" -> JDouble(cn10)
-    )
-  }
-}
+) extends Jsonable
 
 
 case class DepositMetadataType(
@@ -467,17 +287,7 @@ case class DepositMetadataType(
     totalCreditCashNormalizedAmount: Double = 0.0,
     totalCreditItemNormalizedAmount: Double = 0.0,
     totalDebitCashNormalizedAmount: Double = 0.0
-) {
-  def toJObj(): JObject = {
-    JObject(
-      "creditItemCount" -> JInt(creditItemCount),
-      "netNormalizedAmount" -> JDouble(netNormalizedAmount),
-      "totalCreditCashNormalizedAmount" -> JDouble(totalCreditCashNormalizedAmount),
-      "totalCreditItemNormalizedAmount" -> JDouble(totalCreditItemNormalizedAmount),
-      "totalDebitCashNormalizedAmount" -> JDouble(totalDebitCashNormalizedAmount)
-    )
-  }
-}
+) extends Jsonable
 
 case class AccountReferenceType(
     openDate: String = LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME),
@@ -497,8 +307,8 @@ case class AccountReferenceType(
     contactReference: ContactReferenceType = ContactReferenceType(),
     partyRelationReference: PartyRelationReferenceType = PartyRelationReferenceType(),
     referenceUpdateDates: ReferenceUpdateDatesType = ReferenceUpdateDatesType()
-) {
-  def toJObj(): JObject = {
+) extends Jsonable {
+  override def toJObj(): JObject = {
     JObject(
       "openDate" -> JString(openDate),
       "overdraftLimit" -> JDouble(overdraftLimit),
@@ -526,14 +336,7 @@ case class AccountReferenceType(
 class EmployeeReferenceType(
     positionCd: String = "",
     typeCd: String = ""
-) {
-  def toJObj(): JObject = {
-    JObject(
-      "positionCd" -> JString(positionCd),
-      "typeCd" -> JString(typeCd)
-    )
-  }
-}
+) extends Jsonable
 
 
 
@@ -541,27 +344,12 @@ case class ManagedPayeeType(
     businessCategory: String = "",
     isManaged: Boolean = false,
     referenceNumber: String = ""
-) {
-  def toJObj(): JObject = {
-    JObject(
-      "businessCategory" -> JString(businessCategory),
-      "isManaged" -> JBool(isManaged),
-      "referenceNumber" -> JString(referenceNumber)
-    )
-  }
-}
+) extends Jsonable
 
 case class IdentificationType(
     method1: String = "",
     method1Detail1: String = ""
-) {
-  def toJObj(): JObject = {
-    JObject(
-      "method1" -> JString(method1),
-      "method1Detail1" -> JString(method1Detail1)
-    )
-  }
-}
+) extends Jsonable
 
 
 
@@ -572,29 +360,12 @@ case class OnlineDeviceIdentifiersType(
     idConfidence: Double = 0.0,
     lookupCount: Int = 0,
     reportCount: Int = 0
-) {
-  def toJObj(): JObject = {
-    JObject(
-      "onlineDeviceId" -> JString(onlineDeviceId),
-      "firstSeen" -> JString(firstSeen),
-      "lastEvent" -> JString(lastEvent),
-      "idConfidence" -> JDouble(idConfidence),
-      "lookupCount" -> JInt(lookupCount),
-      "reportCount" -> JInt(reportCount)
-    )
-  }
-}
+) extends Jsonable
 
 
 case class HTTPHeaderType(
     httpHeaderFields: String = ""
-) {
-  def toJObj(): JObject = {
-    JObject(
-      "httpHeaderFields" -> JString(httpHeaderFields)
-    )
-  }
-}
+) extends Jsonable
 
 case class OnlineSessionType(
     headerUserAgent: String = "",
@@ -603,18 +374,7 @@ case class OnlineSessionType(
     startDateTime: String = LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME),
     secondFactorAuthInd: Boolean = false,
     httpHeader: HTTPHeaderType = HTTPHeaderType()
-) {
-  def toJObj(): JObject = {
-    JObject(
-      "headerUserAgent" -> JString(headerUserAgent),
-      "ipAddress" -> JString(ipAddress),
-      "loginName" -> JString(loginName),
-      "startDateTime" -> JString(startDateTime),
-      "secondFactorAuthInd" -> JBool(secondFactorAuthInd),
-      "httpHeader" -> httpHeader.toJObj()
-    )
-  }
-}
+) extends Jsonable
 
 
 case class PhoneSessionType(
@@ -624,18 +384,7 @@ case class PhoneSessionType(
     sessionDateTime: String = LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME),
     duration: Double = 0.0,
     isInitiatedByCustomer: Boolean = false
-) {
-  def toJObj(): JObject = {
-    JObject(
-      "deviceSourceNumber" -> JString(deviceSourceNumber),
-      "authenticationChannel" -> JString(authenticationChannel),
-      "authenticationMethod" -> JString(authenticationMethod),
-      "sessionDateTime" -> JString(sessionDateTime),
-      "duration" -> JDouble(duration),
-      "isInitiatedByCustomer" -> JBool(isInitiatedByCustomer)
-    )
-  }
-}
+) extends Jsonable
 
 
 
@@ -644,8 +393,8 @@ case class RejectDataType(
     rejectedDate: String = LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME),
     rejectedTransactionInd: Boolean = false,
     rejectedTypeCd: String = ""
-) {
-  def toJObj(): JObject = {
+) extends Jsonable{
+  override def toJObj(): JObject = {
     JObject(
       "dataCompletenessLevel" -> JString(dataCompletenessLevel),
       "rejectedDate" -> JString(rejectedDate),
@@ -665,20 +414,7 @@ case class TrxCashLetterMetadataType(
     cashLetterID: String = "",
     cashLetterMicrCorrectionIndicatorCode: String = "",
     cashLetterMicrValidIndicatorCode: String = ""
-) {
-  def toJObj(): JObject = {
-    JObject(
-      "cashLetterBankOfFirstDepositItemSequenceNumber" -> JString(cashLetterBankOfFirstDepositItemSequenceNumber),
-      "cashLetterBundleID" -> JString(cashLetterBundleID),
-      "cashLetterCreationDatetime" -> JString(cashLetterCreationDatetime),
-      "cashLetterECEInstitutionItemSequenceNumber" -> JString(cashLetterECEInstitutionItemSequenceNumber),
-      "cashLetterECEInstitutionRoutingNumber" -> JString(cashLetterECEInstitutionRoutingNumber),
-      "cashLetterID" -> JString(cashLetterID),
-      "cashLetterMicrCorrectionIndicatorCode" -> JString(cashLetterMicrCorrectionIndicatorCode),
-      "cashLetterMicrValidIndicatorCode" -> JString(cashLetterMicrValidIndicatorCode)
-    )
-  }
-}
+) extends Jsonable
 
 
 case class TrxMICRDataType(
@@ -690,21 +426,7 @@ case class TrxMICRDataType(
     micrAuxiliaryOnUs: String = "",
     micrExternalProcessingCode: Boolean = false,
     instrumentAmount: String = ""
-) {
-  def toJObj(): JObject = {
-    JObject(
-      "accountNumber" -> JString(accountNumber),
-      "accountNumberCheckDigit" -> JString(accountNumberCheckDigit),
-      "instrumentNumber" -> JString(instrumentNumber),
-      "routingNumber" -> JString(routingNumber),
-      "routingNumberCheckDigit" -> JString(routingNumberCheckDigit),
-      "micrAuxiliaryOnUs" -> JString(micrAuxiliaryOnUs),
-      "micrExternalProcessingCode" -> JBool(micrExternalProcessingCode),
-      "instrumentAmount" -> JString(instrumentAmount)
-    )
-  }
-}
-
+) extends Jsonable
 
 
 
@@ -737,40 +459,7 @@ case class MobileDeviceType(
     appleIdentifierForVendor: String = "",
     appleAdvertisingId: String = "",
     installedAppList: String = ""
-) {
-  def toJObj(): JObject = {
-    JObject(
-      "mobileDeviceData" -> JString(mobileDeviceData),
-      "cellId" -> JString(cellId),
-      "imei" -> JString(imei),
-      "imsi" -> JString(imsi),
-      "deviceName" -> JString(deviceName),
-      "isRootedJailbroken" -> JBool(isRootedJailbroken),
-      "gpsCoordinates" -> JString(gpsCoordinates),
-      "timeZone" -> JString(timeZone),
-      "deviceBrand" -> JString(deviceBrand),
-      "osVersion" -> JString(osVersion),
-      "phoneNumber" -> JString(phoneNumber),
-      "deviceModel" -> JString(deviceModel),
-      "os" -> JString(os),
-      "screenResolution" -> JString(screenResolution),
-      "appVersion" -> JString(appVersion),
-      "malwareList" -> JString(malwareList),
-      "malwareReasonCode" -> JString(malwareReasonCode),
-      "connectionTypeCode" -> JString(connectionTypeCode),
-      "rootedJailbrokenReasonCode" -> JString(rootedJailbrokenReasonCode),
-      "cellTowerCoordinates" -> JString(cellTowerCoordinates),
-      "simISOCountryCode" -> JString(simISOCountryCode),
-      "ituMobileCountryCode" -> JInt(ituMobileCountryCode),
-      "ituMobileNetworkCode" -> JInt(ituMobileNetworkCode),
-      "networkName" -> JString(networkName),
-      "androidId" -> JString(androidId),
-      "appleIdentifierForVendor" -> JString(appleIdentifierForVendor),
-      "appleAdvertisingId" -> JString(appleAdvertisingId),
-      "installedAppList" -> JString(installedAppList)
-    )
-  }
-}
+) extends Jsonable
 
 
 case class TrxReturnDataType(
@@ -781,19 +470,7 @@ case class TrxReturnDataType(
     returnReasonCdStandardCd: String = "",
     returnReasonCode: String = "",
     returnReasonRemarks: String = ""
-) {
-  def toJObj(): JObject = {
-    JObject(
-      "endorsementDate" -> JString(endorsementDate),
-      "isReturnRedepositEligible" -> JBool(isReturnRedepositEligible),
-      "originalTrxId" -> JString(originalTrxId),
-      "returnCount" -> JInt(returnCount),
-      "returnReasonCdStandardCd" -> JString(returnReasonCdStandardCd),
-      "returnReasonCode" -> JString(returnReasonCode),
-      "returnReasonRemarks" -> JString(returnReasonRemarks)
-    )
-  }
-}
+) extends Jsonable
 
 
 
@@ -804,50 +481,21 @@ case class UserReferenceType(
     addressData: AddressType = AddressType(),
     contactReference: ContactReferenceType = ContactReferenceType(),
     referenceUpdateDates: ReferenceUpdateDatesType = ReferenceUpdateDatesType()
-) {
-  def toJObj(): JObject = {
-    JObject(
-      "birthDate" -> JString(birthDate),
-      "name" -> JString(name),
-      "onlineServiceJoinDate" -> JString(onlineServiceJoinDate),
-      "addressData" -> addressData.toJObj(),
-      "contactReference" -> contactReference.toJObj(),
-      "referenceUpdateDates" -> referenceUpdateDates.toJObj()
-    )
-  }
-}
+) extends Jsonable
 
 
 case class VersionDataType(
     transactionActionCd: String = "",
     transactionStatusCd: String = "",
     transactionVersionDescription: String = ""
-) {
-  def toJObj(): JObject = {
-    JObject(
-      "transactionActionCd" -> JString(transactionActionCd),
-      "transactionStatusCd" -> JString(transactionStatusCd),
-      "transactionVersionDescription" -> JString(transactionVersionDescription)
-    )
-  }
-}
-
+) extends Jsonable
 
 case class TrxServicesChangeDataType(
     defaultUDMUpdateInd: Boolean = false,
     entityStaticData: String = "",
     newValue: String = "",
     oldValue: String = ""
-) {
-  def toJObj(): JObject = {
-    JObject(
-      "defaultUDMUpdateInd" -> JBool(defaultUDMUpdateInd),
-      "entityStaticData" -> JString(entityStaticData),
-      "newValue" -> JString(newValue),
-      "oldValue" -> JString(oldValue)
-    )
-  }
-}
+) extends Jsonable
 
 
 
@@ -879,48 +527,11 @@ case class WebDeviceType(
     userAgentBrowserEngine: String = "",
     userLocale: String = "",
     nonce: String = ""
-) {
-  def toJObj(): JObject = {
-    JObject(
-      "webDeviceData" -> JString(webDeviceData),
-      "dataCollectionResponseCd" -> JString(dataCollectionResponseCd),
-      "webSessionBrowserTimeZone" -> JString(webSessionBrowserTimeZone),
-      "webSessionClientScreenResolution" -> JString(webSessionClientScreenResolution),
-      "javascriptOperatingSystem" -> JString(javascriptOperatingSystem),
-      "deviceType" -> JBool(deviceType),
-      "javascriptFonts" -> JString(javascriptFonts),
-      "javascriptUserAgentString" -> JString(javascriptUserAgentString),
-      "flashEnabled" -> JBool(flashEnabled),
-      "flashDetected" -> JBool(flashDetected),
-      "javascriptEnabled" -> JBool(javascriptEnabled),
-      "cookiesEnabled" -> JBool(cookiesEnabled),
-      "browserAcceptLanguage" -> JString(browserAcceptLanguage),
-      "plugins" -> JString(plugins),
-      "systemLocale" -> JString(systemLocale),
-      "adaptorResponseCode" -> JString(adaptorResponseCode),
-      "javaScriptEngine" -> JString(javaScriptEngine),
-      "localDatetime" -> JString(localDatetime),
-      "normalizedDateTime" -> JString(normalizedDateTime),
-      "userAgentOperatingSystem" -> JString(userAgentOperatingSystem),
-      "userAgentWebBrowser" -> JString(userAgentWebBrowser),
-      "userAgentFamily" -> JInt(userAgentFamily),
-      "userAgentPlatform" -> JInt(userAgentPlatform),
-      "userAgentBrowserEngine" -> JString(userAgentBrowserEngine),
-      "userLocale" -> JString(userLocale),
-      "nonce" -> JString(nonce)
-    )
-  }
-}
+) extends Jsonable
 
 case class UserDefinedComplexTypes(
     dataOfUserDefinedType: String = ""
-) {
-  def toJObj(): JObject = {
-    JObject(
-      "dataOfUserDefinedType" -> JString(dataOfUserDefinedType)
-    )
-  }
-}
+) extends Jsonable
 
 
 case class ContactDetailsType(
@@ -933,8 +544,8 @@ case class ContactDetailsType(
     phone1: String = "",
     phone2: String = "",
     phone3: String = ""
-) {
-  def toJObj(): JObject = {
+) extends Jsonable{
+  override def toJObj(): JObject = {
     JObject(
       "addressData1" -> addressData1.toJObj(),
       "addressData2" -> addressData2.toJObj(),
@@ -969,30 +580,7 @@ case class EnrollmentTransactionType(
     identificationMethod2Detail2: String = "",
     identificationMethod2Detail3: String = "",
     serviceDate: String = LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME)
-) {
-  def toJObj(): JObject = {
-    JObject(
-      "authenticationMethod1" -> JString(authenticationMethod1),
-      "authenticationMethod1Detail1" -> JString(authenticationMethod1Detail1),
-      "authenticationMethod1Detail2" -> JString(authenticationMethod1Detail2),
-      "authenticationMethod1Detail3" -> JString(authenticationMethod1Detail3),
-      "authenticationMethod2" -> JString(authenticationMethod2),
-      "authenticationMethod2Detail1" -> JString(authenticationMethod2Detail1),
-      "authenticationMethod2Detail2" -> JString(authenticationMethod2Detail2),
-      "authenticationMethod2Detail3" -> JString(authenticationMethod2Detail3),
-      "contactDetails" -> contactDetails.toJObj(),
-      "identificationMethod1" -> JString(identificationMethod1),
-      "identificationMethod1Detail1" -> JString(identificationMethod1Detail1),
-      "identificationMethod1Detail2" -> JString(identificationMethod1Detail2),
-      "identificationMethod1Detail3" -> JString(identificationMethod1Detail3),
-      "identificationMethod2" -> JString(identificationMethod2),
-      "identificationMethod2Detail1" -> JString(identificationMethod2Detail1),
-      "identificationMethod2Detail2" -> JString(identificationMethod2Detail2),
-      "identificationMethod2Detail3" -> JString(identificationMethod2Detail3),
-      "serviceDate" -> JString(serviceDate)
-    )
-  }
-}
+) extends Jsonable
 
 
 case class ServicesTransactionType(
@@ -1001,56 +589,25 @@ case class ServicesTransactionType(
     reasonCd: String = "",
     relationTypeCd: String = "",
     transactionTypeCd: String = ""
-) {
-  def toJObj(): JObject = {
-    JObject(
-      "isRelationTypePrimary" -> JBool(isRelationTypePrimary),
-      "entityTypeCd" -> JInt(entityTypeCd),
-      "reasonCd" -> JString(reasonCd),
-      "relationTypeCd" -> JString(relationTypeCd),
-      "transactionTypeCd" -> JString(transactionTypeCd)
-    )
-  }
-}
+) extends Jsonable
 
 
 case class OpenBankingDataType(
     apiVersion: String = "",
     invokingSystemID: String = ""
-) {
-  def toJObj(): JObject = {
-    JObject(
-      "apiVersion" -> JString(apiVersion),
-      "invokingSystemID" -> JString(invokingSystemID)
-    )
-  }
-}
+) extends Jsonable
 
 
 case class P2PPayeeDataType(
     alias: String = "",
     aliasType: Int = 0
-) {
-  def toJObj(): JObject = {
-    JObject(
-      "alias" -> JString(alias),
-      "aliasType" -> JInt(aliasType)
-    )
-  }
-}
+) extends Jsonable
 
 
 case class P2PPayorDataType(
     alias: String = "",
     aliasType: Int = 0
-) {
-  def toJObj(): JObject = {
-    JObject(
-      "alias" -> JString(alias),
-      "aliasType" -> JInt(aliasType)
-    )
-  }
-}
+) extends Jsonable
 
 case class ExternalSystemScoreDataType(
     externalSystem1Score: Double = 0.0,
@@ -1062,8 +619,8 @@ case class ExternalSystemScoreDataType(
     externalSystem3Score: Double = 0.0,
     externalSystem3ReasonCode: String = "",
     isLowExternalSystem3ScoreMostRisky: Boolean = false
-) {
-  def toJObj(): JObject = {
+) extends Jsonable {
+  override def toJObj(): JObject = {
     JObject(
       "externalSystem1Score" -> JDouble(externalSystem1Score),
       "externalSystem1ReasonCode" -> JString(externalSystem1ReasonCode),
@@ -1095,8 +652,8 @@ case class CardReferenceDataType(
     isEMVCard: Boolean = false,
     panCountryCd: String = "",
     status: String = ""
-) {
-  def toJObj(): JObject = {
+) extends Jsonable {
+  override def toJObj(): JObject = {
     JObject(
       "activationDate" -> JString(activationDate),
       "atmLimit" -> JDouble(atmLimit),
@@ -1116,6 +673,8 @@ case class CardReferenceDataType(
       "status" -> JString(status)
     )
   }
+  override def toJson(): JValue = this.toJObj().asInstanceOf[JValue]
+  override def toJString(): String = compact(render(this.toJson()))
 }
 
 case class PosTransactionDataType(
@@ -1128,32 +687,12 @@ case class PosTransactionDataType(
   contactlessInd: Boolean = false,
   electronicCommerceFlag: String = "",
   secure3DResponseCd: String = ""
-) {
-  def toJObj(): JObject = {
-    JObject(
-      "avsResponseCd" -> JString(avsResponseCd),
-      "cardholderPresenceIndicatorCd" -> JString(cardholderPresenceIndicatorCd),
-      "cardPresenceInd" -> JBool(cardPresenceInd),
-      "cashbackAmountAsEntered" -> JDouble(cashbackAmountAsEntered),
-      "cashbackAmountInNormalizedCurrency" -> JDouble(cashbackAmountInNormalizedCurrency),
-      "cashbackInd" -> JBool(cashbackInd),
-      "contactlessInd" -> JBool(contactlessInd),
-      "electronicCommerceFlag" -> JString(electronicCommerceFlag),
-      "secure3DResponseCd" -> JString(secure3DResponseCd)
-    )
-  } 
-}
+) extends Jsonable
 
 
 case class RemittanceInformationDataType(
     remittanceInfo: String = ""
-  ) {
-    def toJObj(): JObject = {
-        JObject(
-            "remittanceInfo" -> JString(remittanceInfo)
-        )
-    }
-}
+  ) extends Jsonable 
 
 case class CardTransactionDataType(
     authenticationMethodUsed: String = "",
@@ -1172,28 +711,7 @@ case class CardTransactionDataType(
     track_1_2_Indicator: String = "",
     track1Name: String = "",
     validatedEMVTransactionCd: String = ""
-) {
-  def toJObj(): JObject = {
-    JObject(
-      "authenticationMethodUsed" -> JString(authenticationMethodUsed),
-      "authorizationDecisionCd" -> JString(authorizationDecisionCd),
-      "authorizationResponseCd" -> JString(authorizationResponseCd),
-      "feeAmtInNomalizedCurrency" -> JDouble(feeAmtInNomalizedCurrency),
-      "verificationCd" -> JString(verificationCd),
-      "verificationCdPresence" -> JString(verificationCdPresence),
-      "verificationTypeCd" -> JString(verificationTypeCd),
-      "feeAmountInOriginalCurrency" -> JDouble(feeAmountInOriginalCurrency),
-      "feeAmountInRegionNormalizedCurrency" -> JDouble(feeAmountInRegionNormalizedCurrency),
-      "memberId" -> JString(memberId),
-      "messagePurpose" -> JString(messagePurpose),
-      "messageType" -> JString(messageType),
-      "recurringPaymentIndicator" -> JInt(recurringPaymentIndicator),
-      "track_1_2_Indicator" -> JString(track_1_2_Indicator),
-      "track1Name" -> JString(track1Name),
-      "validatedEMVTransactionCd" -> JString(validatedEMVTransactionCd)
-    )
-  }
-}
+) extends Jsonable
 
 case class ReferenceUpdateDatesType(
     addressUpdateDate: String = LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME),
@@ -1206,22 +724,7 @@ case class ReferenceUpdateDatesType(
     phone2UpdateDate: String = LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME),
     phone3UpdateDate: String = LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME),
     pinUpdateDate: String = LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME)
-) {
-  def toJObj(): JObject = {
-    JObject(
-      "addressUpdateDate" -> JString(addressUpdateDate),
-      "emailUpdateDate" -> JString(emailUpdateDate),
-      "infoUpdateDate" -> JString(infoUpdateDate),
-      "mobilePhoneUpdateDate" -> JString(mobilePhoneUpdateDate),
-      "nameUpdateDate" -> JString(nameUpdateDate),
-      "passwordUpdateDate" -> JString(passwordUpdateDate),
-      "phoneUpdateDate" -> JString(phoneUpdateDate),
-      "phone2UpdateDate" -> JString(phone2UpdateDate),
-      "phone3UpdateDate" -> JString(phone3UpdateDate),
-      "pinUpdateDate" -> JString(pinUpdateDate)
-    )
-  }
-}
+) extends Jsonable 
 
 
 
@@ -1239,8 +742,8 @@ case class PartyReferenceType(
     addressData: AddressType = AddressType(),
     contactReference: ContactReferenceType = ContactReferenceType(),
     referenceUpdateDates: ReferenceUpdateDatesType = ReferenceUpdateDatesType()
-) {
-  def toJObj(): JObject = {
+) extends Jsonable {
+  override def toJObj(): JObject = {
     JObject(
       "birthIncorpDate" -> JString(birthIncorpDate),
       "lastName" -> JString(lastName),
@@ -1272,24 +775,7 @@ case class TransferTransactionType(
     originatorIdentifierForPayor: String = "",
     numberOfApproversRequired: Int = 0,
     payeeCreateUpdateDate: String = ""
-) {
-  def toJObj(): JObject = {
-    JObject(
-      "createdFromTemplateInd" -> JBool(createdFromTemplateInd),
-      "emailNotificationInd" -> JBool(emailNotificationInd),
-      "isAddEditPayee" -> JBool(isAddEditPayee),
-      "isAddEditPayor" -> JBool(isAddEditPayor),
-      "isEbill" -> JBool(isEbill),
-      "isLastTransactionInBatch" -> JBool(isLastTransactionInBatch),
-      "isStandingOrder" -> JBool(isStandingOrder),
-      "executionDate" -> JString(executionDate),
-      "paymentSpeedCd" -> JString(paymentSpeedCd),
-      "originatorIdentifierForPayor" -> JString(originatorIdentifierForPayor),
-      "numberOfApproversRequired" -> JInt(numberOfApproversRequired),
-      "payeeCreateUpdateDate" -> JString(payeeCreateUpdateDate)
-    )
-  }
-}
+) extends Jsonable
 
 // composer class to create a JSON object using builder pattern 
 class JsonBuilder {
@@ -1409,6 +895,9 @@ object JsonBuilder {
   def main(args: Array[String]): Unit = {
     val json = JsonBuilder().build()
     println(pretty(render(json)))
+    println(CardReferenceDataType().toJString())
+    println(BaseTransactionAType().toJString())
+    //println(BaseTransactionAType().toJString())
   }
                                 
 }

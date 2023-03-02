@@ -164,7 +164,7 @@ object GenerateMultipleJson {
           accountNumber = accountKeys(i-1).split("\\.")(2),
           overdraftBalance = GenRegexObject.amountRegex.random().toDouble,
           currencyCd = currencies(i - 1),
-          currentBalance = Option(GenRegexObject.amountRegex.random().toDouble),
+          currentBalance = GenRegexObject.amountRegex.random().toDouble,
         ).toJObj(),
 
         "trxPayeeAccountData" -> JObject(
