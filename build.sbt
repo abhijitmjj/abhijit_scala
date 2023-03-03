@@ -20,9 +20,12 @@ lazy val root = project
     // https://mvnrepository.com/artifact/org.json4s/json4s-core
     libraryDependencies += "org.json4s" %% "json4s-core" % "4.1.0-M2",
     // https://mvnrepository.com/artifact/com.github.mifmif/generex
-    libraryDependencies += "com.github.mifmif" % "generex" % "1.0.2"
+    libraryDependencies += "com.github.mifmif" % "generex" % "1.0.2",
+
 
 
     
 
   )
+
+
