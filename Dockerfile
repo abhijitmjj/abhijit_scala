@@ -8,6 +8,11 @@ RUN curl -L -o sbt-$SBT_VERSION.zip https://github.com/sbt/sbt/releases/download
 && unzip sbt-$SBT_VERSION.zip -d ops
 ENV PATH="/ops/sbt/bin:${PATH}"
 WORKDIR /abhijit_scala
+# copy only the necessary files not in gitignore to avoid unnecessary rebuilds
+COPY build.sbt .
+COPY project/build.properties project/
+COPY project/plugins.sbt project/
+RUN sbt update
 
 COPY . .
 RUN sbt clean compile stage
