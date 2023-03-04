@@ -1,6 +1,6 @@
 import utils.GenerateMultipleJson
 
-@main def hello(args: String*): Unit = 
+@main def abhijit_scala(args: String*): Unit = 
   println("Hello Writing JSON FIS log now!")
   
   GenerateMultipleJson.main(args.toArray)
