@@ -167,25 +167,25 @@ object GenerateMultipleJson {
           currentBalance = GenRegexObject.amountRegex.random().toDouble,
         ).toJObj(),
 
-        "trxPayeeAccountData" -> JObject(
-          "accountNumber" -> JString(payeeAccounts(i-1)),
-          "fiName" -> JString(GenRegexObject.nameRegex.random()),
-          "routingNumber" -> JLong(generateRoutingNumber.toLong),
-          "routingType" -> JString(if countries(i - 1) == "US" then "ABA" else "BIC")
-        ),
-        "trxPayeePartyData" -> JObject(
-          "addressData" -> JObject(
-            "addressLine1" -> JString(GenRegexObject.addressRegex.random()),
-            "countryCd" -> JString(countries(i - 1)),
-            "state" -> JString(GenRegexObject.stateRegex.random()),
+        "trxPayeeAccountData" -> TrxAccountDataType(
+          accountNumber = payeeAccounts(i-1),
+          fiName = GenRegexObject.nameRegex.random(),
+          routingNumber = generateRoutingNumber,
+          routingType = if countries(i - 1) == "US" then "ABA" else "BIC"
+          ).toJObj(),
+        "trxPayeePartyData" -> TrxPartyDataType(
+          name = GenRegexObject.nameRegex.random(),
+          lastName = GenRegexObject.lastNameRegex.random(),
+          addressData = AddressType(
+            addressLine1 = GenRegexObject.addressRegex.random(),
+            countryCd = countries(i - 1),
+            state = GenRegexObject.stateRegex.random(),
           ),
-          "lastName" -> JString(GenRegexObject.lastNameRegex.random()),
-          "name" -> JString(GenRegexObject.nameRegex.random())
-        ),
-        "wirePayee" -> JObject(
-          "originatorToBeneficiaryInfo" -> JString(random.alphanumeric.take(random.between(1,100)).mkString),
-          "wirePayeeAddress" -> JString(GenRegexObject.addressRegex.random()),
-        ),
+        ).toJObj(),
+        "wirePayee" -> WirePayeeType(
+          originatorToBeneficiaryInfo = random.alphanumeric.take(random.between(1,100)).mkString,
+          wirePayeeAddress = GenRegexObject.addressRegex.random(),
+        ).toJObj(),
 
         "channel" -> JString(List("ONLINE", "OFFLINE", "MOBILE", "ATM")(random.nextInt(4)))
 
