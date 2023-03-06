@@ -13,7 +13,6 @@ COPY build.sbt .
 COPY project/build.properties project/
 COPY project/plugins.sbt project/
 RUN sbt update
-
 COPY . .
 RUN sbt clean compile stage
 
