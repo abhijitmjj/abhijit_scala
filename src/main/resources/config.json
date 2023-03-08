@@ -1,0 +1,102 @@
+{
+    "amount": {
+      "originalCurrencyCd": true,
+      "originalAmount": true,
+      "normalizedOriginalAmount": true,
+      "regionNormalizedOriginalAmount": false,
+      "accountAmount": false,
+      "oppAccountAmount": false
+    },
+    "baseTransactionA": {
+      "resendDueToFailureInd": true,
+      "partyKey": true,
+      "transactionLocalDateTime": true,
+      "transactionNormalizedDateTime": true,
+      "sourceCd": true,
+      "channel": false
+    },
+    "baseTransactionB": {
+      "accountKey": true
+    },
+    "baseTransactionC": {
+      "transactionKey": true,
+      "transactionType": true
+    },
+    "monetaryTransactionB": {
+      "addendaRecordCount": false,
+      "fundsDirectionCd": true,
+      "isTruncated": false,
+      "isTrxOnUs": false,
+      "payeeDataAccountNumber": true,
+      "transactionId": true,
+      "isRedeposit": false
+    },
+    "partyReference": {
+      "partyType": true,
+      "isOurEmployee": false,
+    "accountOwnershipReference": {
+      "bankingInd": false,
+      "creditCardInd": false,
+      "insuranceInd": false,
+      "investmentsInd": false,
+      "loanInd": false,
+      "longSavingsInd": false,
+      "mortgageInd": false,
+      "savingsInd": false
+    },
+    "referenceUpdateDates": {
+      "addressUpdateDate": false,
+      "emailUpdateDate": false,
+      "infoUpdateDate": false,
+      "mobilePhoneUpdateDate": false,
+      "nameUpdateDate": false,
+      "passwordUpdateDate": false,
+      "phoneUpdateDate": false,
+      "phone2UpdateDate": false,
+      "phone3UpdateDate": false,
+      "pinUpdateDate": false
+    }
+  },
+  "title": true,
+  "transferTransaction": {
+    "createdFromTemplateInd": false,
+    "emailNotificationInd": false,
+    "isAddEditPayee": true,
+    "isAddEditPayor": false,
+    "isEbill": false,
+    "isLastTransactionInBatch": false,
+    "isStandingOrder": true,
+    "executionDate": true,
+    "paymentSpeedCd": true,
+    "numberOfApproversRequired": false
+  },
+  "trxMonitoredAccountData": {
+    "accountNumber": true,
+    "currencyCd": false,
+    "currentBalance": false,
+    "overdraftBalance": false,
+    "uncollectedBalance": false,
+    "availableBalance": false,
+    "ledgerBalance": false
+  },
+  "trxPayeeAccountData": {
+    "accountNumber": true,
+    "fiName": false,
+    "routingNumber": true,
+    "routingType": true
+  },
+  "trxPayeePartyData": {
+    "addressData": {
+      "addressLine1": true,
+      "countryCd": true,
+      "state": true
+    },
+    "lastName": true,
+    "name": true
+  },
+  "wirePayee": {
+    "originatorToBeneficiaryInfo": true,
+    "wirePayeeAddress": true
+  },
+  "channel": true
+}

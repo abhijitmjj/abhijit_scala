@@ -23,6 +23,7 @@ COPY --from=builder /abhijit_scala/target/universal/stage/ .
 
 # accept the argument for the number of lines to be printed
 COPY run.sh .
+COPY src/main/resources/config.json .
 RUN apk update && apk add bash && chmod +x run.sh
 ENTRYPOINT ["./run.sh"]
 

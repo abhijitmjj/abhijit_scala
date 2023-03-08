@@ -1,6 +1,7 @@
 package utils
 import org.json4s._
 import org.json4s.jackson.JsonMethods._
+import org.json4s.{DefaultFormats, JField, JObject, JString, JValue}
 import java.io.PrintWriter
 import java.io.File
 import scala.util.Random
@@ -28,6 +29,7 @@ object GenRegexObject {
 }
 
 object GenerateMultipleJson {
+
   def generateRoutingNumber: String = {
     val random = new Random()
     val prefix = f"${List(random.between(1, 13),
@@ -65,6 +67,46 @@ object GenerateMultipleJson {
     val millisecond = random.between(0, 1000)
     f"$year%04d-$month%02d-$day%02dT$hour%02d:$minute%02d:$second%02d.$millisecond%03dZ"
   }
+
+//   def filterFields(json: JValue, fieldsToKeep: JValue): JValue = {
+//   (json, fieldsToKeep) match {
+//     case (JObject(jsonFields), JObject(configFields)) => {
+//       val filteredFields = jsonFields.map {
+//         case (fieldName, fieldValue) => {
+//           configFields.find(_._1 == fieldName) match {
+//             case Some((_, JBool(true))) => (fieldName, fieldValue)
+//             case Some((_, JBool(false))) => (fieldName, JNothing)
+//             case Some((_, JObject(configFields))) => (fieldName, filterFields(fieldValue, JObject(configFields)))
+//             case _ => (fieldName, fieldValue)
+//           }
+          
+//         }
+//       }
+//       JObject(filteredFields)
+//     }
+//     case _ => json
+//   }
+// }
+  def filterFields(json: JValue, configFields: JValue): JValue = {
+    json match {
+      case JObject(fields) => {
+        val filteredFields = fields.map {
+          case JField(fieldName, value) => {
+            configFields \ fieldName match {
+              case JNothing => None
+              case JBool(true) => Some(JField(fieldName, value))
+              case JBool(false) => None
+              case JObject(_) => Some(JField(fieldName, filterFields(value, configFields \ fieldName)))
+              case _ => None
+            }
+          }
+        }
+        JObject(filteredFields.flatten)
+      }
+      case _ => json
+    }
+  }
+
 
   def main(args: Array[String]): Unit = {
     //get the number of JSON objects to generate from the command line
@@ -194,8 +236,10 @@ object GenerateMultipleJson {
       
 
     }
+    val fieldsToKeep = if args.nonEmpty && args.length == 2 then parse(scala.io.Source.fromFile(args(1).trim)("UTF-8").mkString) else parse(getClass.getResourceAsStream("/config.json"))
     // remove attributes with empty values
-    val jsonObjects2 = jsonObjects.map(x => x.removeField {
+    val jsonObjects_mod = jsonObjects.map(x => filterFields(x, fieldsToKeep))
+    val jsonObjects2 = jsonObjects_mod.map(x => x.removeField {
       case JField(_, JString(s)) if s.isEmpty => true
       case JField(_, JArray(arr)) if arr.isEmpty => true
       case JField(_, JObject(obj)) if obj.isEmpty => true
@@ -203,6 +247,8 @@ object GenerateMultipleJson {
     })
     
 
+    
+    
     
     // sort the JSON objects by transactionNormalizedDateTime by parsing the date string 
     // and converting it to a LocalDateTime object
