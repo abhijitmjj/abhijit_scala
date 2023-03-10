@@ -182,58 +182,130 @@ val fields_to_keep = parse("""
     }
   }
 """)
-//filterFields(json_A, fields_to_keep)
-//write a function to filter fields recursively and accumulate the result in a new JObject
+// 
+// write a function filterFields(json: JValue, fields_to_keep: JValue): JValue
+// to filter fields recursively and accumulate the result in a new JObject
 // if fieldName is not in configFields, then remove it
-  def filterFields(json: JValue, configFields: JValue): JValue = {
-    json match {
-      case JObject(fields) => {
-        val filteredFields = fields.map {
-          case JField(fieldName, value) => {
-            configFields \ fieldName match {
-              case JNothing => None
-              case JBool(true) => Some(JField(fieldName, value))
-              case JBool(false) => None
-              case JObject(_) => Some(JField(fieldName, filterFields(value, configFields \ fieldName)))
-              case _ => None
+// add ability to work on json arrays
+
+
+
+
+// test the function
+val filter_fields = parse("""
+  {
+    "accountKey": true,
+    "overrideTypeCd": false,
+      "amount": {
+      "originalCurrencyCd": false,
+      "originalAmount": true,
+      "normalizedOriginalAmount": true,
+      "regionNormalizedOriginalAmount": true,
+      "accountAmount": true,
+      "oppAccountAmount": true
+    },
+    "c": [{
+      "d": true,
+      "e": false
+    },
+    {
+      "d": true,
+      "e": false}]
+  }
+""")
+// create a json object that has all the fields
+val json_obj = parse("""
+  {
+    "accountKey": "123456789",
+    "overrideTypeCd": "123456789",
+    "amount": {
+      "originalCurrencyCd": "USD",
+      "originalAmount": 100.0,
+      "normalizedOriginalAmount": 100.0,
+      "regionNormalizedOriginalAmount": 100.0,
+      "accountAmount": 0.0,
+      "oppAccountAmount": 0.0
+    },
+    "c": [{
+      "d": "d",
+      "e": "e"
+    },
+    {
+      "d": "d",
+      "e": "e"
+    }]
+  }
+""")
+def filterFields(json: JValue, fields_to_keep: JValue): JValue = {
+  json match {
+    case JObject(fields) => {
+      val filtered_fields = fields.map {
+        case (fieldName, fieldValue) => {
+          (fields_to_keep \ fieldName) match {
+            case JBool(true) => Some(fieldName -> fieldValue)
+            case JObject(_) => Some(fieldName -> filterFields(fieldValue, fields_to_keep \ fieldName))
+            case JArray(_) => {
+              fieldValue match {
+                case JArray(arr) => {
+                  val filtered_arr = arr.zipWithIndex.map({
+                                      //case (x, index) => Some(index.toString -> filterFields(x, fields_to_keep \ fieldName))
+                                      case (x, index) => Some(index.toString -> filterFields(x, (fields_to_keep \ fieldName)(index)))
+                                                      })
+                  //Some(fieldName -> JArray(filtered_arr.flatten.map(x => x._2)))
+                  Some(fieldName -> JArray(filtered_arr.flatten.map(x => x._2)))
+                }
+                case _ => None
+                }
+              }
+            case _ => None
             }
           }
         }
-        JObject(filteredFields.flatten)
+        JObject(filtered_fields.flatten)
       }
       case _ => json
     }
-  }
-
-filterFields(json_A, fields_to_keep)
-//filterFields(json_A, fields_to_keep) \ "amount"
-//filterFields(json_A, fields_to_keep) \ "amount" \ "originalCurrencyCd"
-//filterFields(json_A, fields_to_keep) \ "amount" \ "originalAmount"
-filterFields(json_A, fields_to_keep) \ "accountKey"
-filterFields(json_A, fields_to_keep) \ "overrideTypeCd"
-filterFields(json_A, fields_to_keep) \ "title"
-//filterFields(json_A, fields_to_keep) \ "amount" \ "regionNormalizedOriginalAmount"
-//filterFields(json_A, fields_to_keep) \ "amount" \ "accountAmount"
-//filterFields(json_A, fields_to_keep) \ "amount" \ "oppAccountAmount"
-//filterFields(json_A, fields_to_keep) \ "amount" \ "normalizedOriginalAmount"
-//filterFields(json_A, fields_to_keep) \ "amount" \ "originalCurrencyCd"
-//filterFields(json_A, fields_to_keep) \ "amount" \ "originalAmount"
-//filterFields(json_A, fields_to_keep) \ "amount" \ "normalizedOriginalAmount"
-//filterFields(json_A, fields_to_keep) \ "amount" \ "regionNormalizedOriginalAmount"
-//filterFields(json_A, fields_to_keep) \ "amount" \ "accountAmount"
-//filterFields(json_A, fields_to_keep) \ "amount" \ "oppAccountAmount"
-//filterFields(json_A, fields_to_keep) \ "amount" \ "normalizedOriginalAmount"
-//filterFields(json_A, fields_to_keep) \ "amount" \ "originalCurrencyCd
-
-fields_to_keep \ "amount"
-json_A \ "amount"
-JObject(("age", JInt(10)) :: Nil) transformField {
-  case ("age", JInt(x)) => ("age", JInt(x+1))
 }
-// check if JValue has a field or not
+compact(render(filterFields(json_obj, filter_fields)))
 
 
-json_A \ "amounta"
-compact(render(filterFields(json_A, fields_to_keep)))
+// filterFields(json_A, fields_to_keep)
+// //filterFields(json_A, fields_to_keep) \ "amount"
+// //filterFields(json_A, fields_to_keep) \ "amount" \ "originalCurrencyCd"
+// //filterFields(json_A, fields_to_keep) \ "amount" \ "originalAmount"
+// filterFields(json_A, fields_to_keep) \ "accountKey"
+// filterFields(json_A, fields_to_keep) \ "overrideTypeCd"
+// filterFields(json_A, fields_to_keep) \ "title"
 
+
+// fields_to_keep \ "amount"
+// json_A \ "amount"
+// JObject(("age", JInt(10)) :: Nil) transformField {
+//   case ("age", JInt(x)) => ("age", JInt(x+1))
+// }
+// // check if JValue has a field or not
+
+
+// json_A \ "amounta"
+// compact(render(filterFields(json_A, fields_to_keep)))
+//create an array of 1,2,3,4,5
+val arr = (1 to 5).toArray
+//get index of each element in the array
+val arr_with_index = arr.zipWithIndex.toList
+(json_obj \ "c").transform {
+  case JArray(arr) => arr.zipWithIndex.map {
+    case (x, index) => {
+      val filtered = Some(index.toString -> x)
+      filtered
+    }
+  }
+}
 // docker run -v /home/abhgupta/workspace/abhijit_scala/src/main/resources/config.json:/app/config.json --rm abhijitscala 2 /app/config.json
+compact(render((json_obj \ "c").transform {
+  case JArray(arr) => arr.zipWithIndex.map {
+    case (x, index) => {
+      val filtered = Some(index.toString -> x)
+      filtered
+    }
+  }
+}))

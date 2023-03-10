@@ -87,25 +87,55 @@ object GenerateMultipleJson {
 //     case _ => json
 //   }
 // }
-  def filterFields(json: JValue, configFields: JValue): JValue = {
-    json match {
-      case JObject(fields) => {
-        val filteredFields = fields.map {
-          case JField(fieldName, value) => {
-            configFields \ fieldName match {
-              case JNothing => None
-              case JBool(true) => Some(JField(fieldName, value))
-              case JBool(false) => None
-              case JObject(_) => Some(JField(fieldName, filterFields(value, configFields \ fieldName)))
-              case _ => None
+  // def filterFields(json: JValue, configFields: JValue): JValue = {
+  //   json match {
+  //     case JObject(fields) => {
+  //       val filteredFields = fields.map {
+  //         case JField(fieldName, value) => {
+  //           configFields \ fieldName match {
+  //             case JNothing => None
+  //             case JBool(true) => Some(JField(fieldName, value))
+  //             case JBool(false) => None
+  //             case JObject(_) => Some(JField(fieldName, filterFields(value, configFields \ fieldName)))
+  //             case _ => None
+  //           }
+  //         }
+  //       }
+  //       JObject(filteredFields.flatten)
+  //     }
+  //     case _ => json
+  //   }
+  // }
+  def filterFields(json: JValue, fields_to_keep: JValue): JValue = {
+  json match {
+    case JObject(fields) => {
+      val filtered_fields = fields.map {
+        case (fieldName, fieldValue) => {
+          (fields_to_keep \ fieldName) match {
+            case JBool(true) => Some(fieldName -> fieldValue)
+            case JObject(_) => Some(fieldName -> filterFields(fieldValue, fields_to_keep \ fieldName))
+            case JArray(_) => {
+              fieldValue match {
+                case JArray(arr) => {
+                  val filtered_arr = arr.zipWithIndex.map({
+                                      //case (x, index) => Some(index.toString -> filterFields(x, fields_to_keep \ fieldName))
+                                      case (x, index) => Some(index.toString -> filterFields(x, (fields_to_keep \ fieldName)(index)))
+                                                      })
+                  //Some(fieldName -> JArray(filtered_arr.flatten.map(x => x._2)))
+                  Some(fieldName -> JArray(filtered_arr.flatten.map(x => x._2)))
+                }
+                case _ => None
+                }
+              }
+            case _ => None
             }
           }
         }
-        JObject(filteredFields.flatten)
+        JObject(filtered_fields.flatten)
       }
       case _ => json
     }
-  }
+}
 
 
   def main(args: Array[String]): Unit = {
