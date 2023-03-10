@@ -67,45 +67,6 @@ object GenerateMultipleJson {
     val millisecond = random.between(0, 1000)
     f"$year%04d-$month%02d-$day%02dT$hour%02d:$minute%02d:$second%02d.$millisecond%03dZ"
   }
-
-//   def filterFields(json: JValue, fieldsToKeep: JValue): JValue = {
-//   (json, fieldsToKeep) match {
-//     case (JObject(jsonFields), JObject(configFields)) => {
-//       val filteredFields = jsonFields.map {
-//         case (fieldName, fieldValue) => {
-//           configFields.find(_._1 == fieldName) match {
-//             case Some((_, JBool(true))) => (fieldName, fieldValue)
-//             case Some((_, JBool(false))) => (fieldName, JNothing)
-//             case Some((_, JObject(configFields))) => (fieldName, filterFields(fieldValue, JObject(configFields)))
-//             case _ => (fieldName, fieldValue)
-//           }
-          
-//         }
-//       }
-//       JObject(filteredFields)
-//     }
-//     case _ => json
-//   }
-// }
-  // def filterFields(json: JValue, configFields: JValue): JValue = {
-  //   json match {
-  //     case JObject(fields) => {
-  //       val filteredFields = fields.map {
-  //         case JField(fieldName, value) => {
-  //           configFields \ fieldName match {
-  //             case JNothing => None
-  //             case JBool(true) => Some(JField(fieldName, value))
-  //             case JBool(false) => None
-  //             case JObject(_) => Some(JField(fieldName, filterFields(value, configFields \ fieldName)))
-  //             case _ => None
-  //           }
-  //         }
-  //       }
-  //       JObject(filteredFields.flatten)
-  //     }
-  //     case _ => json
-  //   }
-  // }
   def filterFields(json: JValue, fields_to_keep: JValue): JValue = {
   json match {
     case JObject(fields) => {
@@ -118,10 +79,8 @@ object GenerateMultipleJson {
               fieldValue match {
                 case JArray(arr) => {
                   val filtered_arr = arr.zipWithIndex.map({
-                                      //case (x, index) => Some(index.toString -> filterFields(x, fields_to_keep \ fieldName))
                                       case (x, index) => Some(index.toString -> filterFields(x, (fields_to_keep \ fieldName)(index)))
                                                       })
-                  //Some(fieldName -> JArray(filtered_arr.flatten.map(x => x._2)))
                   Some(fieldName -> JArray(filtered_arr.flatten.map(x => x._2)))
                 }
                 case _ => None
