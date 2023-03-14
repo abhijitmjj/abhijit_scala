@@ -1,3 +1,8 @@
+import scala.util.Using
+import scala.util.Failure
+import scala.util.Success
+import scala.util.Try
+import scala.annotation.tailrec
 import utils.JsonBuilder
 val answer = 2;
 println(s"The answer is ${answer}.")
@@ -309,3 +314,38 @@ compact(render((json_obj \ "c").transform {
     }
   }
 }))
+
+def fib(n: Int): Int = {
+  @tailrec
+  def fib_tail(n: Int, a: Int, b: Int): Int = n match {
+    case 0 => a
+    case _ => fib_tail(n - 1, b, a + b)
+  }
+
+  fib_tail(n, 0, 1)
+}
+fib(10)
+
+//USE Try, Success, Failure to handle exceptions
+//Try is a container for a computation that may result in an exception
+//Success is a container for a successful computation
+//Failure is a container for a failed computation
+Try(scala.io.Source.fromFile("/home/abhgupta/workspace/abhijit_scala/abhijit_scala/src/main/resources/config.json").mkString) match {
+  case Success(s) => println(s)
+  case Failure(f) => println(f)
+}
+// safely close the file using Using
+Using(scala.io.Source.fromFile("/home/abhgupta/workspace/abhijit_scala/abhijit_scala/src/main/resources/config.json")) {
+  source => println(source.mkString)
+}
+val file = Try(scala.io.Source.fromFile("/home/abhgupta/workspace/abhijit_scala/abhijit_scala/src/main/resources/config.json"))
+file match {
+  case Success(s) => println(s.mkString)
+  case Failure(f) => println(f)
+}
+val a = Using.resource(scala.io.Source.fromFile("/home/abhgupta/workspace/abhijit_scala/abhijit_scala/src/main/resources/config.json")) {
+  source => (source.mkString)
+}
+
+
+// docker build --pull --rm -f "Dockerfile" -t abhijitscala:latest "."

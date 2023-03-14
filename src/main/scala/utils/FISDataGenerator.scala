@@ -253,6 +253,6 @@ object GenerateMultipleJson {
     writer.write(jsonString)
     writer.close()
 
-    println(s"Generated $numObjects JSON objects and wrote them to $fileName.")
+    // println(s"Generated $numObjects JSON objects and wrote them to $fileName.")
   }
 }

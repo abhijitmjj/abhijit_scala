@@ -4,6 +4,12 @@
 
 This is a normal sbt project. You can compile code with `sbt compile`, run it with `sbt run`, and `sbt console` will start a Scala 3 REPL.
 Generates sample FIS data files: 
+
+```
+docker build --pull --rm -f "Dockerfile" -t abhijitscala:latest "."
+docker container run -v ${PWD}/src/main/resources/config.json:/app/config.json --rm abhijitscala 10 /app/config.json
+```
+
 ```
  {
      "$schema": "file:/C:/Users/abhgupta/OneDrive%20-%20Nice%20Systems%20Ltd/Documents/FIS/mapper.json",

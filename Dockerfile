@@ -19,8 +19,7 @@ RUN sbt clean compile stage
 FROM openjdk:17-alpine as runner
 WORKDIR /app
 COPY --from=builder /abhijit_scala/target/universal/stage/ .
-# EXPOSE 8080
-
+EXPOSE 8080
 # accept the argument for the number of lines to be printed
 COPY run.sh .
 COPY src/main/resources/config.json .
